@@ -45,6 +45,43 @@ let boolean = function
 
 let check label condition = if not condition then failwith label
 
+(* These fixtures apply an A-valued identity to an argument bound at type B.
+   A different semantic error is not evidence for that intended rejection. *)
+let dependent_refusals = [
+  "depth-0-wrong-binder", Type_mismatch;
+  "depth-1-wrong-binder", Type_mismatch;
+  "depth-2-wrong-binder", Type_mismatch;
+  "depth-3-wrong-binder", Type_mismatch;
+  "depth-4-wrong-binder", Type_mismatch;
+  "depth-5-wrong-binder", Type_mismatch;
+  "depth-6-wrong-binder", Type_mismatch;
+  "depth-7-wrong-binder", Type_mismatch;
+  "depth-8-wrong-binder", Type_mismatch;
+]
+
+let typing_matches id result expected =
+  match List.assoc_opt id dependent_refusals, expected, result with
+  | Some required, "refused", Error actual -> actual = required
+  | Some _, _, _ -> false
+  | None, "refused", Error (Expected_sort | Expected_function | Type_mismatch) -> true
+  | None, "refused", Ok _ -> false
+  | None, expected, Ok actual -> actual = expr expected
+  | None, _, Error _ -> false
+
+let check_typing_refusal_controls () =
+  let controls = [
+    "wrong binder rejects Expected_sort", Error Expected_sort, "refused";
+    "wrong binder rejects Expected_function", Error Expected_function, "refused";
+    "wrong binder rejects fuel exhaustion", Error Limit_exceeded, "refused";
+    "wrong binder rejects height refusal", Error Height_limit, "refused";
+    "wrong binder rejects index overflow", Error Index_overflow, "refused";
+    "wrong binder rejects successful inference", Ok (Sort 1), "refused";
+    "wrong binder requires a refusal expectation", Ok (Sort 1), "s1";
+  ] in
+  List.iter (fun (label, result, expected) ->
+    check label (not (typing_matches "depth-0-wrong-binder" result expected))) controls;
+  List.length controls
+
 let replay path =
   In_channel.with_open_text path (fun input ->
     let ids = Hashtbl.create 144 in
@@ -68,15 +105,12 @@ let replay_types path =
       | ["type"; id; term; expected] ->
           check ("duplicate type vector: " ^ id) (not (Hashtbl.mem ids id));
           Hashtbl.add ids id ();
-          let matches = match infer_closed ~fuel:100_000 (expr term), expected with
-            | Error (Expected_sort | Expected_function | Type_mismatch), "refused" -> true
-            | Ok _, "refused" -> false
-            | Ok actual, expected -> actual = expr expected
-            | Error _, _ -> false
-          in
+          let matches = typing_matches id (infer_closed ~fuel:100_000 (expr term)) expected in
           check ("OCaml typing disagrees: " ^ id) matches
       | _ -> failwith "invalid type vector row");
-    check "incomplete type corpus" (Hashtbl.length ids = 40))
+    check "incomplete type corpus" (Hashtbl.length ids = 40);
+    List.iter (fun (id, _) ->
+      check ("missing dependent refusal: " ^ id) (Hashtbl.mem ids id)) dependent_refusals)
 
 let replay_definitions path =
   let rows = In_channel.with_open_text path In_channel.input_lines in
@@ -102,6 +136,7 @@ let () =
   replay Sys.argv.(1);
   replay_types (Sys.argv.(1) ^ ".types");
   replay_definitions (Sys.argv.(1) ^ ".defs");
+  let typing_refusal_controls = check_typing_refusal_controls () in
   let ty = Sort 1 in
   let id = Lam (ty, Var 0) in
   let self = Lam (ty, App (Var 0, Var 0)) in
@@ -119,7 +154,7 @@ let () =
     (match expr "s1 v0" with _ -> false | exception Failure _ -> true);
   check "inference checks scope" (infer_closed ~fuel:100 (Var 0) = Error Invalid_scope);
   check "inference shares fuel" (infer_closed ~fuel:1 id = Error Limit_exceeded);
-  check "sort successor overflow" (infer_closed ~fuel:100 (Sort max_int) = Error Limit_exceeded);
+  check "sort successor overflow" (infer_closed ~fuel:100 (Sort max_int) = Error Index_overflow);
   let initial = empty_environment in
   let next = match define ~fuel:100 initial ~name:"prop" ~ty ~value:(Sort 0) with
     | Ok env -> env
@@ -134,4 +169,6 @@ let () =
   check "unknown constant in erased argument"
     (infer_in ~fuel:100 next (App (Lam (ty, Sort 0), Const "missing"))
       = Error Unknown_constant);
-  print_endline "144 Lean conversion, 40 typing, 7 environment vectors and 16 controls passed"
+  Printf.printf
+    "144 Lean conversion, 40 typing, 7 environment vectors, 16 controls and %d typing refusal controls passed\n"
+    typing_refusal_controls

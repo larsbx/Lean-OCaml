@@ -1,0 +1,101 @@
+{
+  "schema": "lean-ocaml.source-provenance.v1",
+  "base_repository": "larsbx/Lean-OCaml",
+  "base_revision": "cedbaa619434f6ce4ff229ae41c38339116c900f",
+  "lean_release": "4.34.1",
+  "lean_commit": "5045d0056413266e57c625dcd7c365b10e377c52",
+  "ocaml_version": "5.5.1",
+  "authority": "reference_and_evidence_only",
+  "files": [
+    {
+      "path": "conformance/rust-v1.tsv",
+      "repository": "larsbx/lean-rust",
+      "revision": "27ececb284b82b7d43884af317c7fcb89feb3da0",
+      "upstream_path": "oracle/cases.tsv",
+      "source_url": "https://github.com/larsbx/lean-rust/blob/27ececb284b82b7d43884af317c7fcb89feb3da0/oracle/cases.tsv",
+      "git_blob_sha1": "7c8411b0bc2c3dfd4e4952bd4f9b127003486bf3",
+      "sha256": "936d4ad972c459bb73fc4690aba2c259de1d5ec6bba3cd007d4e0768eead0637",
+      "copied_byte_for_byte": true
+    },
+    {
+      "path": "oracles/RustBaseline.lean",
+      "repository": "larsbx/lean-rust",
+      "revision": "27ececb284b82b7d43884af317c7fcb89feb3da0",
+      "upstream_path": "oracle/Kernel.lean",
+      "source_url": "https://github.com/larsbx/lean-rust/blob/27ececb284b82b7d43884af317c7fcb89feb3da0/oracle/Kernel.lean",
+      "git_blob_sha1": "f09ab46b5cf8720ce00ec44571b67f71d1835c4b",
+      "sha256": "18a0297905ea01ebef399afd55ebce1654b13147e1fefe59406fb2ee13a8bbd9",
+      "copied_byte_for_byte": true
+    },
+    {
+      "path": "docs/rust-v1-correspondence.md",
+      "repository": "larsbx/lean-rust",
+      "revision": "27ececb284b82b7d43884af317c7fcb89feb3da0",
+      "upstream_path": "docs/kernel-correspondence.md",
+      "source_url": "https://github.com/larsbx/lean-rust/blob/27ececb284b82b7d43884af317c7fcb89feb3da0/docs/kernel-correspondence.md",
+      "git_blob_sha1": "939dbb417e29ab8a9726101ba25adaed349bc30e",
+      "sha256": "e6569b258fcfd4f952a13658c3d592df8c66c55e1826a1ca39c93fd84b3a5c4b",
+      "copied_byte_for_byte": true
+    },
+    {
+      "path": "oracles/Generate.lean",
+      "repository": "larsbx/Lean-OCaml",
+      "revision": "f180db5a47e185ea3d5390bede2d76a2b80a9024",
+      "upstream_path": "oracles/Generate.lean",
+      "source_url": "https://github.com/larsbx/Lean-OCaml/blob/f180db5a47e185ea3d5390bede2d76a2b80a9024/oracles/Generate.lean",
+      "git_blob_sha1": "a7c737bd0f749c2df8fb139e2bbbf00753eecdeb",
+      "sha256": "414d41b9062b5de7208709c4a10fce777f61cad3231d552df68406be7e209695",
+      "copied_byte_for_byte": true
+    },
+    {
+      "path": "conformance/generated.tsv",
+      "repository": "larsbx/Lean-OCaml",
+      "revision": "802d30bc90859e82faf33049513fd82f7e507eb6",
+      "upstream_path": "conformance/generated.tsv",
+      "source_url": "https://github.com/larsbx/Lean-OCaml/blob/802d30bc90859e82faf33049513fd82f7e507eb6/conformance/generated.tsv",
+      "git_blob_sha1": "d6d3dea5ebf23044cb3ad6934b74dad3ec61af2c",
+      "sha256": "4d1871dc8517ec3dd599773663ade41939c9ea6051d74842864de79689797ce9",
+      "copied_byte_for_byte": true
+    },
+    {
+      "path": "conformance/generated.tsv.types",
+      "repository": "larsbx/Lean-OCaml",
+      "revision": "f180db5a47e185ea3d5390bede2d76a2b80a9024",
+      "upstream_path": "conformance/generated.tsv.types",
+      "source_url": "https://github.com/larsbx/Lean-OCaml/blob/f180db5a47e185ea3d5390bede2d76a2b80a9024/conformance/generated.tsv.types",
+      "git_blob_sha1": "28d745afdeada4b44dd7c6ead07e2a398ec94b10",
+      "sha256": "521823fbfc1830e17ab6b72f6f99c690bcd64918611e38a1d845d561403f20da",
+      "copied_byte_for_byte": true
+    },
+    {
+      "path": "conformance/generated.tsv.defs",
+      "repository": "larsbx/Lean-OCaml",
+      "revision": "802d30bc90859e82faf33049513fd82f7e507eb6",
+      "upstream_path": "conformance/generated.tsv.defs",
+      "source_url": "https://github.com/larsbx/Lean-OCaml/blob/802d30bc90859e82faf33049513fd82f7e507eb6/conformance/generated.tsv.defs",
+      "git_blob_sha1": "1289327b360e16f8295152859d2beb7d72d60572",
+      "sha256": "689929b0bd8e6a3ddf43069b092d73189588743b960dd68153e5855da1394113",
+      "copied_byte_for_byte": true
+    }
+  ],
+  "oracle_regeneration": {
+    "command": "sh conformance/run.sh --lean",
+    "expected_outputs": [
+      "conformance/rust-v1.tsv",
+      "conformance/generated.tsv",
+      "conformance/generated.tsv.types",
+      "conformance/generated.tsv.defs"
+    ]
+  },
+  "notes": [
+    "The 19-row Rust baseline records two intentional Lean-true / beta-zeta-false disagreements.",
+    "The extended OCaml corpus contains 144 conversion, 40 typing and 7 environment rows (191 total).",
+    "The 27 dependent-binder rows and the generator are byte-identical imports from PR #2 revision f180db5a47e185ea3d5390bede2d76a2b80a9024.",
+    "ValidateTypingRefusals.lean is new repository source, covered by the acceptance source manifest, and supplies exact semantic-error checking without changing imported bytes.",
+    "Fixture and hash agreement are finite evidence, not proof of full Lean kernel compatibility."
+  ],
+  "integration_parents": [
+    "f180db5a47e185ea3d5390bede2d76a2b80a9024",
+    "cedbaa619434f6ce4ff229ae41c38339116c900f"
+  ]
+}

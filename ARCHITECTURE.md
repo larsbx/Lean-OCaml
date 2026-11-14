@@ -3,7 +3,9 @@
 This candidate is an independent implementation of bounded β/ζ conversion.
 The OCaml reference reports equality, an inferred type, or a refusal. Lean
 checks the comparison operands and typing cases when generating the vectors.
-CI fails on any divergence or replay error.
+CI fails on any unregistered disagreement or replay error. The Rust baseline
+explicitly checks two designated disagreements for unsupported η and proof
+irrelevance; these are not claimed as full Lean conversion agreement.
 The project owns no declaration, theorem, or deployment acceptance boundary.
 
 The v1 fragment has de Bruijn indices, numeric universe sorts, application,
@@ -21,6 +23,11 @@ unfolding within the fragment. Names are case-sensitive strings.
 
 General universe expressions, opaque constants, η, proof irrelevance, inductives,
 recursors, and declaration admission require future correspondence work.
+
+The scoped-conversion core enforces height 128 on inputs, intermediate trees
+and outputs. Traversal, normalization, structural comparison and export share
+an operation budget. Height and arithmetic refusals remain distinct. See the
+[correspondence contract](docs/kernel-correspondence.md) for full boundaries.
 
 The kernel plane records the unimplemented admission boundary. See
 [language boundaries](LANGUAGE_BOUNDARIES.md) and the [vector schema](schemas/beta-zeta-v1.md).
