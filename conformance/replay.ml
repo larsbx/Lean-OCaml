@@ -62,7 +62,7 @@ let replay path =
 
 let replay_types path =
   In_channel.with_open_text path (fun input ->
-    let ids = Hashtbl.create 13 in
+    let ids = Hashtbl.create 40 in
     In_channel.input_lines input |> List.iter (fun line ->
       match String.split_on_char '\t' line with
       | ["type"; id; term; expected] ->
@@ -76,7 +76,7 @@ let replay_types path =
           in
           check ("OCaml typing disagrees: " ^ id) matches
       | _ -> failwith "invalid type vector row");
-    check "incomplete type corpus" (Hashtbl.length ids = 13))
+    check "incomplete type corpus" (Hashtbl.length ids = 40))
 
 let replay_definitions path =
   let rows = In_channel.with_open_text path In_channel.input_lines in
@@ -134,4 +134,4 @@ let () =
   check "unknown constant in erased argument"
     (infer_in ~fuel:100 next (App (Lam (ty, Sort 0), Const "missing"))
       = Error Unknown_constant);
-  print_endline "144 Lean conversion, 13 typing, 7 environment vectors and 16 controls passed"
+  print_endline "144 Lean conversion, 40 typing, 7 environment vectors and 16 controls passed"

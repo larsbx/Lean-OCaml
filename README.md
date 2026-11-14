@@ -13,7 +13,7 @@ Omit `--lean` to replay the checked-in vectors without regenerating them.
 
 Run the pinned estate layout audit with `sh tools/estate-audit.sh`.
 
-The replay includes 144 conversion comparisons and 13 closed-term typing cases
+The replay includes 144 conversion comparisons and 40 closed-term typing cases
 checked by Lean. `infer_closed` returns a normalized type within the β/ζ
 fragment. The [typing vector schema](schemas/typing-v1.md) documents the cases.
 

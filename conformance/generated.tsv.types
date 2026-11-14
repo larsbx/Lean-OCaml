@@ -11,3 +11,30 @@ type	argument-mismatch	a l s1 v0 s1	refused
 type	let-mismatch	t s1 s1 s0	refused
 type	binder-not-type	l l s1 v0 v0	refused
 type	pi-body-not-type	p s1 l s1 v0	refused
+type	depth-0-beta	l s1 l s1 l v1 a l v2 v0 v0	p s1 p s1 p v1 v2
+type	depth-0-zeta	l s1 l s1 l v1 t v2 a l v2 v0 v0 v0	p s1 p s1 p v1 v2
+type	depth-0-wrong-binder	l s1 l s1 l v0 a l v2 v0 v0	refused
+type	depth-1-beta	l s1 l s1 l v1 l s1 a l v3 v0 v1	p s1 p s1 p v1 p s1 v3
+type	depth-1-zeta	l s1 l s1 l v1 l s1 t v3 a l v3 v0 v1 v0	p s1 p s1 p v1 p s1 v3
+type	depth-1-wrong-binder	l s1 l s1 l v0 l s1 a l v3 v0 v1	refused
+type	depth-2-beta	l s1 l s1 l v1 l s1 l s1 a l v4 v0 v2	p s1 p s1 p v1 p s1 p s1 v4
+type	depth-2-zeta	l s1 l s1 l v1 l s1 l s1 t v4 a l v4 v0 v2 v0	p s1 p s1 p v1 p s1 p s1 v4
+type	depth-2-wrong-binder	l s1 l s1 l v0 l s1 l s1 a l v4 v0 v2	refused
+type	depth-3-beta	l s1 l s1 l v1 l s1 l s1 l s1 a l v5 v0 v3	p s1 p s1 p v1 p s1 p s1 p s1 v5
+type	depth-3-zeta	l s1 l s1 l v1 l s1 l s1 l s1 t v5 a l v5 v0 v3 v0	p s1 p s1 p v1 p s1 p s1 p s1 v5
+type	depth-3-wrong-binder	l s1 l s1 l v0 l s1 l s1 l s1 a l v5 v0 v3	refused
+type	depth-4-beta	l s1 l s1 l v1 l s1 l s1 l s1 l s1 a l v6 v0 v4	p s1 p s1 p v1 p s1 p s1 p s1 p s1 v6
+type	depth-4-zeta	l s1 l s1 l v1 l s1 l s1 l s1 l s1 t v6 a l v6 v0 v4 v0	p s1 p s1 p v1 p s1 p s1 p s1 p s1 v6
+type	depth-4-wrong-binder	l s1 l s1 l v0 l s1 l s1 l s1 l s1 a l v6 v0 v4	refused
+type	depth-5-beta	l s1 l s1 l v1 l s1 l s1 l s1 l s1 l s1 a l v7 v0 v5	p s1 p s1 p v1 p s1 p s1 p s1 p s1 p s1 v7
+type	depth-5-zeta	l s1 l s1 l v1 l s1 l s1 l s1 l s1 l s1 t v7 a l v7 v0 v5 v0	p s1 p s1 p v1 p s1 p s1 p s1 p s1 p s1 v7
+type	depth-5-wrong-binder	l s1 l s1 l v0 l s1 l s1 l s1 l s1 l s1 a l v7 v0 v5	refused
+type	depth-6-beta	l s1 l s1 l v1 l s1 l s1 l s1 l s1 l s1 l s1 a l v8 v0 v6	p s1 p s1 p v1 p s1 p s1 p s1 p s1 p s1 p s1 v8
+type	depth-6-zeta	l s1 l s1 l v1 l s1 l s1 l s1 l s1 l s1 l s1 t v8 a l v8 v0 v6 v0	p s1 p s1 p v1 p s1 p s1 p s1 p s1 p s1 p s1 v8
+type	depth-6-wrong-binder	l s1 l s1 l v0 l s1 l s1 l s1 l s1 l s1 l s1 a l v8 v0 v6	refused
+type	depth-7-beta	l s1 l s1 l v1 l s1 l s1 l s1 l s1 l s1 l s1 l s1 a l v9 v0 v7	p s1 p s1 p v1 p s1 p s1 p s1 p s1 p s1 p s1 p s1 v9
+type	depth-7-zeta	l s1 l s1 l v1 l s1 l s1 l s1 l s1 l s1 l s1 l s1 t v9 a l v9 v0 v7 v0	p s1 p s1 p v1 p s1 p s1 p s1 p s1 p s1 p s1 p s1 v9
+type	depth-7-wrong-binder	l s1 l s1 l v0 l s1 l s1 l s1 l s1 l s1 l s1 l s1 a l v9 v0 v7	refused
+type	depth-8-beta	l s1 l s1 l v1 l s1 l s1 l s1 l s1 l s1 l s1 l s1 l s1 a l v10 v0 v8	p s1 p s1 p v1 p s1 p s1 p s1 p s1 p s1 p s1 p s1 p s1 v10
+type	depth-8-zeta	l s1 l s1 l v1 l s1 l s1 l s1 l s1 l s1 l s1 l s1 l s1 t v10 a l v10 v0 v8 v0	p s1 p s1 p v1 p s1 p s1 p s1 p s1 p s1 p s1 p s1 p s1 v10
+type	depth-8-wrong-binder	l s1 l s1 l v0 l s1 l s1 l s1 l s1 l s1 l s1 l s1 l s1 a l v10 v0 v8	refused
