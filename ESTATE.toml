@@ -1,0 +1,113 @@
+version = 2
+template = "estate-repository-v2"
+
+[repo]
+id = "lean-ocaml"
+slug = "larsbx/lean-ocaml"
+class = "research"
+layer = 3
+band = "EXPLORE"
+stage = "candidate"
+inv = []
+default_branch = "main"
+
+[origin]
+decided_by = "proposed"
+chats = []
+artifacts = []
+
+[[dep]]
+id = "estate-governance"
+rev = "bd731398b567cfe523667fc8e23a96d299067141"
+pin = "sha256:412a64dea58d709aae21e5a0315b8e7e96488c310a9d999267927ba3d8146a30"
+
+[[conform]]
+id = "lean-rust"
+vectors = "conformance/generated.tsv"
+
+[exports]
+names = []
+
+[layout]
+status = "canonical"
+
+[principles]
+ordering = ["authority", "domain", "language"]
+empty_silos = "forbidden"
+cross_language_disagreement = "fail_closed"
+generated_surfaces = "derived_only"
+vendor_code = "non_local"
+experimental_code = "non_authoritative"
+
+[[plane]]
+id = "policy"
+target = "policy"
+authority = "governance"
+required = true
+current = ["policy", "ESTATE.toml"]
+
+[[plane]]
+id = "kernel"
+target = "kernel"
+authority = "canonical_executable"
+required = false
+current = ["kernel"]
+
+[[plane]]
+id = "reference"
+target = "reference"
+authority = "non_authoritative_reference"
+required = true
+current = ["reference"]
+
+[[plane]]
+id = "oracles"
+target = "oracles"
+authority = "non_authoritative_oracle"
+required = true
+current = ["oracles"]
+
+[[plane]]
+id = "schemas"
+target = "schemas"
+authority = "contract"
+required = true
+current = ["schemas"]
+
+[[plane]]
+id = "conformance"
+target = "conformance"
+authority = "evidence"
+required = true
+current = ["conformance"]
+
+[[plane]]
+id = "tooling"
+target = "tools"
+authority = "repository_tooling"
+required = true
+current = ["tools"]
+
+[[plane]]
+id = "docs"
+target = "docs"
+authority = "exposition"
+required = true
+current = ["docs", "ARCHITECTURE.md", "README.md", "LANGUAGE_BOUNDARIES.md"]
+
+[[language]]
+name = "OCaml"
+authority = "canonical"
+roles = ["kernel", "reference", "conformance"]
+acceptance_authority = false
+
+[[language]]
+name = "Lean"
+authority = "supporting"
+roles = ["oracle"]
+acceptance_authority = false
+
+[migration]
+mode = "boundary_first"
+mass_move = false
+next = []

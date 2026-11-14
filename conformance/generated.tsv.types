@@ -1,0 +1,13 @@
+type	sort	s0	s1
+type	pi-max	p s1 s1	s2
+type	pi-impredicative	p s1 p s0 v0	s0
+type	identity	l s1 v0	p s1 s1
+type	dependent-identity	l s1 l v0 v0	p s1 p v0 v1
+type	dependent-application	a l s1 l v0 v0 s0	p s0 s0
+type	zeta-dependent-type	t s1 s0 l v0 v0	p s0 s0
+type	conversion-in-argument	a l s1 v0 t s1 s0 v0	s1
+type	nonfunction	a s0 s0	refused
+type	argument-mismatch	a l s1 v0 s1	refused
+type	let-mismatch	t s1 s1 s0	refused
+type	binder-not-type	l l s1 v0 v0	refused
+type	pi-body-not-type	p s1 l s1 v0	refused

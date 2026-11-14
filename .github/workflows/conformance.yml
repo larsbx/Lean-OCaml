@@ -1,0 +1,45 @@
+name: OCaml reference conformance
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  conformance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Audit estate layout
+        run: sh tools/estate-audit.sh
+      - name: Build pinned OCaml bytecode compiler
+        run: |
+          set -eu
+          compiler="$RUNNER_TEMP/ocaml"
+          mkdir "$compiler"
+          curl --fail --silent --show-error --location --proto '=https' \
+            -o "$compiler/source.tgz" https://registry.npmjs.org/ocaml/-/ocaml-5.5.1000.tgz
+          expected='mVJPlS4R2in1AAw+hUBFQqgUq52KHgxu7a6D3306hDyG/SU6e7/YlIbuAUXJ7PXwBBGQe+SMuDyTeVjydwoIbQ=='
+          test "$(openssl dgst -sha512 -binary "$compiler/source.tgz" | openssl base64 -A)" = "$expected"
+          tar xzf "$compiler/source.tgz" --strip-components=1 -C "$compiler"
+          cd "$compiler"
+          ./configure --disable-native-compiler --prefix="$RUNNER_TEMP/ocaml-install"
+          make -j2 world
+          make install
+          echo "$RUNNER_TEMP/ocaml-install/bin" >> "$GITHUB_PATH"
+      - name: Install pinned Lean
+        run: |
+          set -eu
+          curl --fail --silent --show-error --location --proto '=https' \
+            -o "$RUNNER_TEMP/elan.tar.gz" https://github.com/leanprover/elan/releases/download/v4.1.2/elan-x86_64-unknown-linux-gnu.tar.gz
+          tar xzf "$RUNNER_TEMP/elan.tar.gz" -C "$RUNNER_TEMP" elan-init
+          "$RUNNER_TEMP/elan-init" -y --no-modify-path --default-toolchain none
+          "$HOME/.elan/bin/elan" toolchain install "$(cat lean-toolchain)"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Replay OCaml and regenerate Lean vectors
+        run: |
+          test "$(ocamlc -version)" = "$(cat .ocaml-version)"
+          sh conformance/run.sh --lean
