@@ -1,0 +1,7 @@
+def	ocamlRefAlias	s1	s0	true
+def	ocamlRefId	p cocamlRefAlias cocamlRefAlias	l cocamlRefAlias v0	true
+def	ocamlRefAlias	s1	s0	false
+def	ocamlRefMissing	s1	cocamlRefMissing	false
+def	ocamlRefMismatch	s1	s1	false
+def	ocamlRefNonType	l s1 v0	s0	false
+infer	cocamlRefId	p s0 s0
