@@ -119,7 +119,7 @@ let () =
     (match expr "s1 v0" with _ -> false | exception Failure _ -> true);
   check "inference checks scope" (infer_closed ~fuel:100 (Var 0) = Error Invalid_scope);
   check "inference shares fuel" (infer_closed ~fuel:1 id = Error Limit_exceeded);
-  check "sort successor overflow" (infer_closed ~fuel:100 (Sort max_int) = Error Limit_exceeded);
+  check "sort successor overflow" (infer_closed ~fuel:100 (Sort max_int) = Error Index_overflow);
   let initial = empty_environment in
   let next = match define ~fuel:100 initial ~name:"prop" ~ty ~value:(Sort 0) with
     | Ok env -> env

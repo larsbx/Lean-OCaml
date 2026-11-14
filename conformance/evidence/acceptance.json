@@ -1,0 +1,46 @@
+{
+  "schema": "lean-ocaml.local-acceptance.v1",
+  "base_revision": "802d30bc90859e82faf33049513fd82f7e507eb6",
+  "source_tree_sha256": "96f73d2f0e24d3dbe3669414070d15c1a8e194b6bc93ad03285c946ae6e525af",
+  "source_manifest": "conformance/evidence/source-manifest.json",
+  "evidence_directory_excluded_from_source_digest": "conformance/evidence/",
+  "source_digest_encoding": "SHA-256 of sorted file objects with path, bytes, sha256; canonical compact JSON with sorted keys",
+  "ocaml_executable": "/workspace/scratch/bfab66fc21c4/.tooling/ocaml-install/bin/ocamlc",
+  "ocaml_version": "5.5.1",
+  "lean_executable": "/workspace/scratch/bfab66fc21c4/.tooling/lean/lean-4.34.1-linux/bin/lean",
+  "lean_version": "Lean (version 4.34.1, x86_64-unknown-linux-gnu, commit 5045d0056413266e57c625dcd7c365b10e377c52, Release)",
+  "lean_regeneration_requested": true,
+  "hosted_acceptance_included": false,
+  "authority": "unsigned_local_test_observations_only",
+  "checks": [
+    {
+      "command": [
+        "sh",
+        "conformance/run.sh",
+        "--lean"
+      ],
+      "started_at_utc": "2026-11-14T20:59:19.707926+00:00",
+      "finished_at_utc": "2026-11-14T21:00:05.160623+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "log": "conformance/evidence/conformance.log",
+      "log_sha256": "2a596a90af7623577772997dd9d172482722e2df1092f22bc868dfd36ba48b04"
+    },
+    {
+      "command": [
+        "sh",
+        "tools/estate-audit.sh",
+        "/workspace/scratch/bfab66fc21c4/.tooling/audit_estate_layout.py"
+      ],
+      "started_at_utc": "2026-11-14T21:00:05.161011+00:00",
+      "finished_at_utc": "2026-11-14T21:00:05.275639+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "log": "conformance/evidence/estate-audit.log",
+      "log_sha256": "e378fd36af37d1a8cf4d4f3e7c3380fcf0ae0e2f68afee4a79382bc6c49794d6"
+    }
+  ],
+  "source_unchanged_during_acceptance": true,
+  "status": "passed",
+  "completed_at_utc": "2026-11-14T21:00:05.283136+00:00"
+}
