@@ -8,8 +8,12 @@ type expr =
   | Let of expr * expr * expr
 
 type error = Invalid_scope | Invalid_universe | Limit_exceeded
+  | Height_limit | Index_overflow
   | Expected_sort | Expected_function | Type_mismatch
   | Unknown_constant | Duplicate_definition | Invalid_name
+
+let max_height = 128
+
 exception Refusal of error
 
 let guard predicate error = if not predicate then raise (Refusal error)
@@ -23,84 +27,210 @@ let budget fuel =
 let protect f =
   try Ok (f ()) with
   | Refusal error -> Error error
+  (* Defensive runtime refusal, never an equality or typing verdict. *)
   | Stack_overflow -> Error Limit_exceeded
 
-(* Walk only through expression structure. A binder scopes its body alone. *)
-let rec map ?(constant = fun name -> Const name) tick variable depth term =
-  tick ();
-  let here = map ~constant tick variable depth in
-  let under term = map ~constant tick variable (depth + 1) term in
-  match term with
-  | Var index -> variable depth index
-  | Const name -> constant name
-  | Sort level ->
-      guard (level >= 0) Invalid_universe;
-      term
-  | App (f, x) -> App (here f, here x)
-  | Lam (domain, body) -> Lam (here domain, under body)
-  | Pi (domain, body) -> Pi (here domain, under body)
-  | Let (ty, value, body) -> Let (here ty, here value, under body)
+(* Private terms carry checked heights. Public recursive variants can contain
+   cyclic values or oversized trees; only [read] admits them into this form. *)
+type term = { node : node; height : int }
+and node =
+  | V of int
+  | S of int
+  | A of term * term
+  | L of term * term
+  | P of term * term
+  | T of term * term * term
 
-let validate tick scope term =
+let make node =
+  let children = match node with
+    | V _ | S _ -> 0
+    | A (a, b) | L (a, b) | P (a, b) -> max a.height b.height
+    | T (a, b, c) -> max a.height (max b.height c.height)
+  in
+  let height = children + 1 in
+  guard (height <= max_height) Height_limit;
+  { node; height }
+
+let unknown _ = raise (Refusal Unknown_constant)
+
+(* Left-to-right validation includes all children, even ones reduction erases.
+   Subtraction avoids adding the ambient scope to a binder depth near max_int. *)
+let read ?(constant = unknown) tick scope expression =
   guard (scope >= 0) Invalid_scope;
-  ignore (map ~constant:(fun _ -> raise (Refusal Unknown_constant)) tick (fun depth index ->
-    guard (index >= 0 && (index < depth || index - depth < scope)) Invalid_scope;
-    Var index) 0 term)
+  let rec visit depth height expression =
+    guard (height <= max_height) Height_limit;
+    tick ();
+    let here = visit depth (height + 1) in
+    let under = visit (depth + 1) (height + 1) in
+    match expression with
+    | Var index ->
+        guard (index >= 0 && (index < depth || index - depth < scope)) Invalid_scope;
+        make (V index)
+    | Sort level ->
+        guard (level >= 0) Invalid_universe;
+        make (S level)
+    | Const name -> constant name
+    | App (f, x) ->
+        let f = here f in
+        let x = here x in
+        make (A (f, x))
+    | Lam (domain, body) ->
+        let domain = here domain in
+        let body = under body in
+        make (L (domain, body))
+    | Pi (domain, body) ->
+        let domain = here domain in
+        let body = under body in
+        make (P (domain, body))
+    | Let (ty, value, body) ->
+        let ty = here ty in
+        let value = here value in
+        let body = under body in
+        make (T (ty, value, body))
+  in
+  visit 0 1 expression
+
+(* Returning a shared internal tree as public syntax also consumes fuel. *)
+let rec write tick term =
+  tick ();
+  match term.node with
+  | V index -> Var index
+  | S level -> Sort level
+  | A (f, x) ->
+      let f = write tick f in
+      let x = write tick x in
+      App (f, x)
+  | L (domain, body) ->
+      let domain = write tick domain in
+      let body = write tick body in
+      Lam (domain, body)
+  | P (domain, body) ->
+      let domain = write tick domain in
+      let body = write tick body in
+      Pi (domain, body)
+  | T (ty, value, body) ->
+      let ty = write tick ty in
+      let value = write tick value in
+      let body = write tick body in
+      Let (ty, value, body)
+
+(* A binder scopes its body alone. Internal height bounds also bound [depth]. *)
+let rec map tick variable depth term =
+  tick ();
+  let here = map tick variable depth in
+  let under = map tick variable (depth + 1) in
+  match term.node with
+  | V index -> variable depth index
+  | S _ -> term
+  | A (f, x) ->
+      let f = here f in
+      let x = here x in
+      make (A (f, x))
+  | L (domain, body) ->
+      let domain = here domain in
+      let body = under body in
+      make (L (domain, body))
+  | P (domain, body) ->
+      let domain = here domain in
+      let body = under body in
+      make (P (domain, body))
+  | T (ty, value, body) ->
+      let ty = here ty in
+      let value = here value in
+      let body = under body in
+      make (T (ty, value, body))
 
 let lift tick amount =
   map tick (fun cutoff index ->
-    if index < cutoff then Var index
+    if index < cutoff then make (V index)
     else (
-      guard (index <= max_int - amount) Limit_exceeded;
-      Var (index + amount))) 0
+      guard (index <= max_int - amount) Index_overflow;
+      make (V (index + amount)))) 0
 
 let substitute tick replacement body =
   map tick (fun depth index ->
-    if index < depth then Var index
-    else if index > depth then Var (index - 1)
+    if index < depth then make (V index)
+    else if index > depth then make (V (index - 1))
     else if depth = 0 then replacement
     else lift tick depth replacement) 0 body
+
+let validate_scope ~fuel ~scope expression =
+  protect (fun () -> ignore (read (budget fuel) scope expression))
 
 let instantiate ~fuel ~scope ~body replacement =
   protect (fun () ->
     let tick = budget fuel in
     guard (scope >= 0) Invalid_scope;
-    guard (scope < max_int) Limit_exceeded;
-    validate tick (scope + 1) body;
-    validate tick scope replacement;
-    substitute tick replacement body)
+    guard (scope < max_int) Index_overflow;
+    let body = read tick (scope + 1) body in
+    let replacement = read tick scope replacement in
+    write tick (substitute tick replacement body))
 
-let rec head tick term =
+(* [depth] bounds the evaluator's active expression contexts as well as term
+   height. Tail reductions retain it; descent through an application adds one. *)
+let rec head tick depth term =
+  guard (depth <= max_height) Height_limit;
   tick ();
-  match term with
-  | Let (_, value, body) -> head tick (substitute tick value body)
-  | App (f, x) ->
-      (match head tick f with
-      | Lam (_, body) -> head tick (substitute tick x body)
-      | f -> App (f, x))
-  | term -> term
+  match term.node with
+  | T (_, value, body) -> head tick depth (substitute tick value body)
+  | A (f, x) ->
+      let f = head tick (depth + 1) f in
+      (match f.node with
+      | L (_, body) -> head tick depth (substitute tick x body)
+      | _ -> make (A (f, x)))
+  | _ -> term
 
-let rec normal tick term =
-  match head tick term with
-  | App (f, x) -> App (normal tick f, normal tick x)
-  | Lam (ty, body) -> Lam (normal tick ty, normal tick body)
-  | Pi (ty, body) -> Pi (normal tick ty, normal tick body)
-  | term -> term
+let rec normal tick depth term =
+  match (head tick depth term).node with
+  | A (f, x) ->
+      let f = normal tick (depth + 1) f in
+      let x = normal tick (depth + 1) x in
+      make (A (f, x))
+  | L (ty, body) ->
+      let ty = normal tick (depth + 1) ty in
+      let body = normal tick (depth + 1) body in
+      make (L (ty, body))
+  | P (ty, body) ->
+      let ty = normal tick (depth + 1) ty in
+      let body = normal tick (depth + 1) body in
+      make (P (ty, body))
+  | (V _ | S _) as node -> make node
+  | T (_, value, body) -> normal tick depth (substitute tick value body)
 
-let whnf ~fuel term =
+let rec equal tick left right =
+  tick ();
+  match left.node, right.node with
+  | V a, V b | S a, S b -> a = b
+  | A (a, b), A (c, d) | L (a, b), L (c, d) | P (a, b), P (c, d) ->
+      equal tick a c && equal tick b d
+  | T (a, b, c), T (d, e, f) ->
+      equal tick a d && equal tick b e && equal tick c f
+  | _ -> false
+
+let whnf_in ~fuel ~scope expression =
   protect (fun () ->
     let tick = budget fuel in
-    validate tick 0 term;
-    head tick term)
+    let term = read tick scope expression in
+    write tick (head tick 1 term))
 
-let beta_zeta_equal ~fuel left right =
+let whnf ~fuel expression = whnf_in ~fuel ~scope:0 expression
+
+let normalize ~fuel ~scope expression =
   protect (fun () ->
     let tick = budget fuel in
-    validate tick 0 left;
-    validate tick 0 right;
-    let left = normal tick left in
-    let right = normal tick right in
-    left = right)
+    let term = read tick scope expression in
+    write tick (normal tick 1 term))
+
+let beta_zeta_equal_in ~fuel ~scope left right =
+  protect (fun () ->
+    let tick = budget fuel in
+    let left = read tick scope left in
+    let right = read tick scope right in
+    let left = normal tick 1 left in
+    let right = normal tick 1 right in
+    equal tick left right)
+
+let beta_zeta_equal ~fuel left right = beta_zeta_equal_in ~fuel ~scope:0 left right
 
 (* Each context entry is scoped in the tail that was present when it was added. *)
 let infer_type tick term =
@@ -111,51 +241,54 @@ let infer_type tick term =
     | ty :: _ when index = 0 -> ty
     | _ :: tail -> lookup tail (index - 1)
   in
-  let rec infer context term =
+  let rec infer depth context term =
+    guard (depth <= max_height) Height_limit;
     tick ();
-    match term with
-    | Var index ->
-        guard (index < max_int) Limit_exceeded;
+    match term.node with
+    | V index ->
+        guard (index < max_int) Index_overflow;
         lift tick (index + 1) (lookup context index)
-    | Const _ -> raise (Refusal Unknown_constant)
-    | Sort level ->
-        guard (level < max_int) Limit_exceeded;
-        Sort (level + 1)
-    | Lam (domain, body) ->
-        ignore (sort_level context domain);
-        Pi (domain, infer (domain :: context) body)
-    | Pi (domain, body) ->
-        let input = sort_level context domain in
-        let output = sort_level (domain :: context) body in
-        Sort (if output = 0 then 0 else max input output)
-    | App (fn, arg) ->
-        (match head tick (infer context fn) with
-        | Pi (domain, body) ->
-            check context arg domain;
+    | S level ->
+        guard (level < max_int) Index_overflow;
+        make (S (level + 1))
+    | L (domain, body) ->
+        ignore (sort_level (depth + 1) context domain);
+        let body_type = infer (depth + 1) (domain :: context) body in
+        make (P (domain, body_type))
+    | P (domain, body) ->
+        let input = sort_level (depth + 1) context domain in
+        let output = sort_level (depth + 1) (domain :: context) body in
+        make (S (if output = 0 then 0 else max input output))
+    | A (fn, arg) ->
+        (match (head tick 1 (infer (depth + 1) context fn)).node with
+        | P (domain, body) ->
+            check (depth + 1) context arg domain;
             substitute tick arg body
         | _ -> raise (Refusal Expected_function))
-    | Let (ty, value, body) ->
-        ignore (sort_level context ty);
-        check context value ty;
-        (* Zeta-expand before inferring so the local value can affect conversion. *)
-        infer context (substitute tick value body)
-  and sort_level context term =
-    match head tick (infer context term) with
-    | Sort level -> level
+    | T (ty, value, body) ->
+        ignore (sort_level (depth + 1) context ty);
+        check (depth + 1) context value ty;
+        (* Zeta-expand before inferring so the local value affects conversion. *)
+        infer depth context (substitute tick value body)
+  and sort_level depth context term =
+    match (head tick 1 (infer depth context term)).node with
+    | S level -> level
     | _ -> raise (Refusal Expected_sort)
-  and check context term expected =
-    let actual = normal tick (infer context term) in
-    let expected = normal tick expected in
-    guard (actual = expected) Type_mismatch
+  and check depth context term expected =
+    let actual = normal tick 1 (infer depth context term) in
+    let expected = normal tick 1 expected in
+    guard (equal tick actual expected) Type_mismatch
   in
-  validate tick 0 term;
-  normal tick (infer [] term)
+  normal tick 1 (infer 1 [] term)
 
-let infer_closed ~fuel term =
-  protect (fun () -> infer_type (budget fuel) term)
+let infer_closed ~fuel expression =
+  protect (fun () ->
+    let tick = budget fuel in
+    let term = read tick 0 expression in
+    write tick (infer_type tick term))
 
 (* Values are expanded, checked, and closed before becoming visible. *)
-type environment = (string * expr) list
+type environment = (string * term) list
 
 let empty_environment = []
 
@@ -164,20 +297,21 @@ let rec find_definition tick name entries =
   match entries with
   | [] -> None
   | (key, value) :: rest ->
-      if key = name then Some value else find_definition tick name rest
+      if String.equal key name then Some value else find_definition tick name rest
 
-let expand tick env =
+let expand tick env expression =
   let constant name =
     match find_definition tick name env with
     | Some value -> value
     | None -> raise (Refusal Unknown_constant)
   in
-  map ~constant tick (fun _ index -> Var index) 0
+  read ~constant tick 0 expression
 
-let infer_in ~fuel env term =
+let infer_in ~fuel env expression =
   protect (fun () ->
     let tick = budget fuel in
-    infer_type tick (expand tick env term))
+    let term = expand tick env expression in
+    write tick (infer_type tick term))
 
 let define ~fuel env ~name ~ty ~value =
   protect (fun () ->
@@ -187,7 +321,8 @@ let define ~fuel env ~name ~ty ~value =
     let ty = expand tick env ty in
     let value = expand tick env value in
     let ty_sort = infer_type tick ty in
-    (match ty_sort with Sort _ -> () | _ -> raise (Refusal Expected_sort));
+    (match ty_sort.node with S _ -> () | _ -> raise (Refusal Expected_sort));
     let actual = infer_type tick value in
-    guard (actual = normal tick ty) Type_mismatch;
+    let expected = normal tick 1 ty in
+    guard (equal tick actual expected) Type_mismatch;
     (name, value) :: env)
