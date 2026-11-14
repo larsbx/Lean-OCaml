@@ -4,14 +4,17 @@
 
 | Layer | Inventory | Interpretation |
 | --- | --- | --- |
-| Inherited conformance | 144 conversion, 13 typing, 7 environment vectors; 16 controls | Preserve existing main behavior; the successor overflow control now expects `Index_overflow`. |
+| Extended conformance | 144 conversion, 40 typing, 7 environment vectors; 16 inherited controls | Preserve existing main behavior; the successor overflow control now expects `Index_overflow`. |
+| OCaml typing refusal classification | 7 injected controls | Wrong-binder cases require `Type_mismatch`; other semantic errors, resource failures and successful inference cannot satisfy them. |
 | Rust baseline | 19 rows: 9 matching equality, 2 designated disagreements, 4 WHNF, 4 substitution | Finite trusted-oracle contract, including its limits. |
 | Harness rejection | 12 controls | Missing/duplicate rows, malformed expressions and altered/unregistered disagreements are rejected. |
 | OCaml adversarial | 75 named controls | Scope, capture, cyclic values, sharing, negative integers, overflow, erased invalid children, divergence and intermediate height. |
 | Explicit disagreements | 2 controls | η and proof irrelevance remain outside conversion. |
 | Generated properties | 1,024 cases and 10,240 assertions | Internal scoped-syntax properties; not Lean-checked and not necessarily well typed. |
 | Fresh Lean regeneration | Four fixture files from two generators | Pinned trusted execution must reproduce exact fixture bytes. |
+| Strict Lean typing replay | All 40 typing rows: 26 accepted and 14 exact semantic refusals; 5 injected classifier controls | Nine wrong-binder cases require `appTypeMismatch`; time, memory, recursion, interruption and internal failures cannot count as typing evidence. |
 | Provenance | Seven source artifacts | Revisions, paths, Git blob identity, SHA-256 and toolchain pins. |
+| Source receipt regression checks | 3 Python tests | Checkout/worktree metadata produce the same source hash; source file and directory symlinks are refused. |
 | Estate layout | Pinned external auditor | Local manifest/layout conformance only. |
 
 Counts are inventory. Actual results are recorded in
@@ -23,7 +26,8 @@ The receipt is unsigned local evidence, not an independent attestation or a
 hosted CI result. Compare source hashes before applying it to another tree.
 
 The evidence directory is excluded from its own source digest to avoid
-self-reference. Build outputs and Git metadata are also excluded. Symlinked
+self-reference. Build outputs and Git metadata (including a worktree's `.git`
+file) are also excluded. Symlinked
 source files and directories are refused. An extracted source bundle has no
 Git baseline but can still produce byte-level evidence; Git must be installed.
 
@@ -52,8 +56,11 @@ receipt records the versions actually executed.
 
 ## Boundaries
 
-All input children are validated before erasing reductions. Resource refusals
-never count as inequality or expected typing rejection. Height is limited to
+All OCaml input children are validated before erasing reductions. OCaml resource
+refusals never count as inequality or expected typing rejection. The supplementary
+Lean checker requires the designated semantic exception for every negative
+typing row; its five classifier controls inject exceptions rather than induce
+actual resource exhaustion. Height in the OCaml reference is limited to
 128 (leaf height one), including constructed intermediates and active evaluator
 contexts. Work units are implementation-specific. `Limit_exceeded` also covers
 the defensive runtime stack-overflow handler, so it does not prove divergence.
@@ -64,7 +71,18 @@ and declaration/theorem admission are unsupported. The retained reference
 inference/environment subsystem is not a general Lean kernel. Neither finite
 agreement nor estate layout conformance proves complete compatibility.
 
-The earlier local review tree was restored for publication and revalidated;
-its old receipt is not transferred to the new source. PR #2's separate 27
-binder-typing vectors are outside this increment. Its later integration must
-update both source provenance and the 13-case typing count.
+The byte-preserved `Generate.lean` records any Lean exception for an expected
+negative definition row. The four inherited negative definition rows therefore
+record refusal observations without identifying a precise semantic cause.
+This increment closes that evidence gap for all typing rows through
+`ValidateTypingRefusals.lean`; it does not claim to close it for the separate
+reference-definition lane. OCaml still refuses resource errors as expected
+definition rejections.
+
+The earlier conversion-hardening receipt is not transferred to this source.
+This increment integrates PR #2's 27 dependent-binder rows with the hardened
+core, updates source provenance, and freshly regenerates all four fixture
+files. The complete Lean fixture inventory is now 210 rows: 191 extended
+OCaml rows plus the 19-row Rust baseline, including its two declared
+disagreements. The receipt's baseline revision is the local checkout parent;
+`conformance/provenance.json` records both integration parents explicitly.

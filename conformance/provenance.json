@@ -1,7 +1,7 @@
 {
   "schema": "lean-ocaml.source-provenance.v1",
   "base_repository": "larsbx/Lean-OCaml",
-  "base_revision": "802d30bc90859e82faf33049513fd82f7e507eb6",
+  "base_revision": "cedbaa619434f6ce4ff229ae41c38339116c900f",
   "lean_release": "4.34.1",
   "lean_commit": "5045d0056413266e57c625dcd7c365b10e377c52",
   "ocaml_version": "5.5.1",
@@ -40,11 +40,11 @@
     {
       "path": "oracles/Generate.lean",
       "repository": "larsbx/Lean-OCaml",
-      "revision": "802d30bc90859e82faf33049513fd82f7e507eb6",
+      "revision": "f180db5a47e185ea3d5390bede2d76a2b80a9024",
       "upstream_path": "oracles/Generate.lean",
-      "source_url": "https://github.com/larsbx/Lean-OCaml/blob/802d30bc90859e82faf33049513fd82f7e507eb6/oracles/Generate.lean",
-      "git_blob_sha1": "bbb66c11985e26ecacde5f487e7fc94a24bcd506",
-      "sha256": "bc52eab65cdf1bbb94ba9eae34dc21b2b73bfc1eb3e6705f12cd67239bed027f",
+      "source_url": "https://github.com/larsbx/Lean-OCaml/blob/f180db5a47e185ea3d5390bede2d76a2b80a9024/oracles/Generate.lean",
+      "git_blob_sha1": "a7c737bd0f749c2df8fb139e2bbbf00753eecdeb",
+      "sha256": "414d41b9062b5de7208709c4a10fce777f61cad3231d552df68406be7e209695",
       "copied_byte_for_byte": true
     },
     {
@@ -60,11 +60,11 @@
     {
       "path": "conformance/generated.tsv.types",
       "repository": "larsbx/Lean-OCaml",
-      "revision": "802d30bc90859e82faf33049513fd82f7e507eb6",
+      "revision": "f180db5a47e185ea3d5390bede2d76a2b80a9024",
       "upstream_path": "conformance/generated.tsv.types",
-      "source_url": "https://github.com/larsbx/Lean-OCaml/blob/802d30bc90859e82faf33049513fd82f7e507eb6/conformance/generated.tsv.types",
-      "git_blob_sha1": "5ab07a86c23fd357547cf4c280499016be2f758d",
-      "sha256": "61984e092408e0d3b548004d8c632428d3c8c03eb5f33e24742b3452efe5737a",
+      "source_url": "https://github.com/larsbx/Lean-OCaml/blob/f180db5a47e185ea3d5390bede2d76a2b80a9024/conformance/generated.tsv.types",
+      "git_blob_sha1": "28d745afdeada4b44dd7c6ead07e2a398ec94b10",
+      "sha256": "521823fbfc1830e17ab6b72f6f99c690bcd64918611e38a1d845d561403f20da",
       "copied_byte_for_byte": true
     },
     {
@@ -89,7 +89,13 @@
   },
   "notes": [
     "The 19-row Rust baseline records two intentional Lean-true / beta-zeta-false disagreements.",
-    "The 164-row inherited OCaml corpus comes from its separate original Lean generator.",
+    "The extended OCaml corpus contains 144 conversion, 40 typing and 7 environment rows (191 total).",
+    "The 27 dependent-binder rows and the generator are byte-identical imports from PR #2 revision f180db5a47e185ea3d5390bede2d76a2b80a9024.",
+    "ValidateTypingRefusals.lean is new repository source, covered by the acceptance source manifest, and supplies exact semantic-error checking without changing imported bytes.",
     "Fixture and hash agreement are finite evidence, not proof of full Lean kernel compatibility."
+  ],
+  "integration_parents": [
+    "f180db5a47e185ea3d5390bede2d76a2b80a9024",
+    "cedbaa619434f6ce4ff229ae41c38339116c900f"
   ]
 }

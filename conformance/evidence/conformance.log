@@ -1,5 +1,11 @@
 Source provenance passed: 7 byte-identical source artifacts, pinned toolchains and corpus counts
-144 Lean conversion, 13 typing, 7 environment vectors and 16 controls passed
+144 Lean conversion, 40 typing, 7 environment vectors, 16 controls and 7 typing refusal controls passed
 19 Rust-baseline Lean fixtures passed (9 matching equality, 2 registered disagreements, 4 WHNF, 4 substitution); 12 harness rejection controls passed
 adversarial: 75 controls passed; known-disagreement: 2 controls passed; generated: 1024 deterministic cases / 10240 property assertions passed
+Strict Lean typing replay passed: 40 rows (26 accepted, 14 semantic refusals; 9 appTypeMismatch wrong-binder cases), 5 classifier controls
 Pinned Lean regeneration passed: all four fixture files match byte for byte
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK

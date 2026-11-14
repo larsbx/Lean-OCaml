@@ -43,7 +43,7 @@ def verify() -> None:
     if (ROOT / "lean-toolchain").read_text().strip() != "leanprover/lean4:v" + manifest["lean_release"]:
         raise ValueError("Lean version differs from provenance")
     counts = {"conformance/rust-v1.tsv": 19, "conformance/generated.tsv": 144,
-              "conformance/generated.tsv.types": 13, "conformance/generated.tsv.defs": 7}
+              "conformance/generated.tsv.types": 40, "conformance/generated.tsv.defs": 7}
     for path, count in counts.items():
         if len((ROOT / path).read_text().splitlines()) != count:
             raise ValueError(f"fixture count changed: {path}")

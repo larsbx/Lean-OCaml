@@ -50,3 +50,9 @@ an expected-head guard. Document local and hosted evidence separately.
 Successful tests establish finite observations only. Full Lean compatibility,
 a general program-refinement theorem, declaration admission and performance
 superiority remain unproved and unclaimed.
+
+## Subsequent integration
+
+The separate dependent-typing cases are integrated by [ADR 0003](0003-dependent-typing-integration.md)
+after this conversion-hardening increment merged. Its fresh receipt and source
+provenance supersede the earlier inventory for the resulting combined tree.

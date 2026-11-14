@@ -22,11 +22,21 @@ repository is required. Local directory names are not remote identities.
 `f180db5a47e185ea3d5390bede2d76a2b80a9024`, is separate dependent-typing work.
 Its [run 43631641975](https://github.com/larsbx/Lean-OCaml/actions/runs/43631641975)
 and [run 43631637353](https://github.com/larsbx/Lean-OCaml/actions/runs/43631637353)
-were both successful at this inspection. This increment does not incorporate
-its 27 additional vectors. Integrating them later requires updating fixture
-provenance and the typing count from 13 to 40.
+were both successful at this inspection. PR #3 initially kept
+its 27 additional vectors separate. The continuation recorded below integrates
+them and updates provenance and the typing count from 13 to 40.
 
 Existing hosted results belong to their exact revisions. The committed local
 receipt identifies the bytes tested here; the new pull request's hosted
 workflow must pass for its actual head before merge. Repository state can
 change after these dated observations.
+
+## Dependent-typing continuation
+
+After PR #3 merged as `cedbaa619434f6ce4ff229ae41c38339116c900f`,
+PR #2 was updated against that hardened main. The integration preserves the
+core, imports the original 27 added cases without changing their bytes,
+updates provenance and corpus counts, and requires the intended
+`Type_mismatch` for every wrong-binder case. Its current evidence is recorded
+in the PR and fresh local receipt; earlier workflow successes do not validate
+the new integrated head.

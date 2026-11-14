@@ -30,6 +30,10 @@ def source_snapshot() -> tuple[list[dict[str, object]], str]:
                 continue
             if path.is_symlink():
                 raise ValueError(f"source symlink is outside the receipt contract: {path}")
+            # A linked worktree uses a .git file instead of a directory. Neither
+            # representation is source, and the file contains a local path.
+            if name == ".git":
+                continue
             content = path.read_bytes()
             files.append({"path": path.relative_to(ROOT).as_posix(),
                           "bytes": len(content),

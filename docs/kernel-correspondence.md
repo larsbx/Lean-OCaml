@@ -8,7 +8,7 @@ bounded β/ζ conversion. It has no declaration or theorem admission authority.
 in `reference/`. Existing closed-term inference and transparent monomorphic
 reference definitions are separate APIs, not general Lean kernel admission.
 
-The baseline is [Lean-OCaml main 802d30bc90859e82faf33049513fd82f7e507eb6](https://github.com/larsbx/Lean-OCaml/tree/802d30bc90859e82faf33049513fd82f7e507eb6).
+The hardened baseline is [Lean-OCaml main cedbaa619434f6ce4ff229ae41c38339116c900f](https://github.com/larsbx/Lean-OCaml/tree/cedbaa619434f6ce4ff229ae41c38339116c900f).
 The cross-language contract is [lean-rust 27ececb284b82b7d43884af317c7fcb89feb3da0](https://github.com/larsbx/lean-rust/blob/27ececb284b82b7d43884af317c7fcb89feb3da0/docs/kernel-correspondence.md).
 Trusted oracle execution pins [Lean 4.34.1 commit 5045d0056413266e57c625dcd7c365b10e377c52](https://github.com/leanprover/lean4/tree/5045d0056413266e57c625dcd7c365b10e377c52).
 The reproducible OCaml compiler target is **5.5.1**.
@@ -76,8 +76,9 @@ Work units are not comparable with Rust fuel or a count of β/ζ contractions.
 | `Unknown_constant` | Constant supplied to bare conversion, or absent from the separate reference environment. |
 
 Error precedence is not a contract for inputs violating several restrictions.
-No error can satisfy an expected false conversion row or a designated typing
-rejection. Cyclic public OCaml values receive height/work refusals. These
+No error can satisfy an expected false conversion row. Only the designated
+semantic OCaml errors can satisfy typing-refusal rows; resource and structural
+failures cannot. Cyclic public OCaml values receive height/work refusals. These
 limits do not claim general hostile-process isolation or whole-process memory
 bounds, and `Limit_exceeded` does not prove nontermination.
 
@@ -116,11 +117,23 @@ imported runtime kernel. The canonical estate auditor remains external.
 The baseline oracle uses trusted `Kernel.check`, `Kernel.whnf` and
 `Kernel.isDefEq` on closed typed cases, and `Expr.instantiate1` on open syntax.
 Its 19 rows contain nine matching equalities, two designated disagreements,
-four WHNF results and four substitutions. The inherited 164-row corpus has a
-separate generator. Both are regenerated with pinned Lean and compared byte
-for byte. The 1,024 generated OCaml cases are internal properties and receive
-no Lean checking. See [validation.md](validation.md) for the execution record.
+four WHNF results and four substitutions. The extended 191-row corpus
+(144 conversion, 40 typing, 7 environment) has a separate generator imported
+from PR #2 at f180db5a47e185ea3d5390bede2d76a2b80a9024. Both are regenerated
+with pinned Lean and compared byte for byte. A supplementary strict Lean
+replay checks all 40 typing rows and requires the designated semantic errors
+for all 14 refusals. The four inherited negative definition rows still use
+the generator's generic exception handling; they are refusal observations
+without precise semantic-error evidence. The 1,024 generated OCaml cases are
+internal properties and receive no Lean checking. See
+[validation.md](validation.md) for the execution record.
 
 Any extension must specify its expression/environment mapping, add trusted
 positive and rejection cases, record directional disagreements and review
 any change in acceptance authority.
+
+The dependent-typing extension uses 18 positive β/ζ examples and nine
+wrong-binder rejections over depths zero through eight. Each wrong-binder
+row must produce OCaml `Type_mismatch` and Lean `appTypeMismatch`; other
+semantic errors and every resource refusal fail that observation. See
+[ADR 0003](0003-dependent-typing-integration.md).

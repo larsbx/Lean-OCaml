@@ -36,8 +36,8 @@
   },
   {
     "path": "README.md",
-    "bytes": 3305,
-    "sha256": "1c668aa2657e5bf3f111ebbb271d2d5199a7f108a0b57910d2260268a4781d35"
+    "bytes": 3477,
+    "sha256": "0a518500125143a2a9168278c8ad30eda89a8076b297729244235bd48cda115b"
   },
   {
     "path": "conformance/adversarial.ml",
@@ -56,23 +56,23 @@
   },
   {
     "path": "conformance/generated.tsv.types",
-    "bytes": 510,
-    "sha256": "61984e092408e0d3b548004d8c632428d3c8c03eb5f33e24742b3452efe5737a"
+    "bytes": 3198,
+    "sha256": "521823fbfc1830e17ab6b72f6f99c690bcd64918611e38a1d845d561403f20da"
   },
   {
     "path": "conformance/provenance.json",
-    "bytes": 4598,
-    "sha256": "bb81f1da5b32343bbe18ffffb8d3345f41ede7c24c42c2d74de52ec2c84bfdaa"
+    "bytes": 5061,
+    "sha256": "58af68877a108d227b8accfad9e1625ddd258495b4295e4e96880198d70c8363"
   },
   {
     "path": "conformance/replay.ml",
-    "bytes": 6026,
-    "sha256": "eee30f837c32ce3c1eb03b5f203fc782df2b01c4cbdbf828a3f8e19c612a6058"
+    "bytes": 7762,
+    "sha256": "c4dd668c063db8df6d6ec3022ec112db965fdd756c513c9c8ba42d1c393d3482"
   },
   {
     "path": "conformance/run.sh",
-    "bytes": 2533,
-    "sha256": "59864fcea20f9f8d312c33eded443e43672601801175779d4624d0a1ed309994"
+    "bytes": 2661,
+    "sha256": "64fc06eaec7d60e12636bcbb6d7cca9006db195085061b5b24e6207d0d7b6496"
   },
   {
     "path": "conformance/rust-v1.tsv",
@@ -91,18 +91,23 @@
   },
   {
     "path": "docs/0002-local-beta-zeta-hardening.md",
-    "bytes": 2773,
-    "sha256": "d87320c36533a977c4941e662f8138825270a6ba6e4756e94b092d8c366f1549"
+    "bytes": 3059,
+    "sha256": "e21142f3474db9bffa6ef31d6da659f97e914c70fe4281d8d723262293a3648a"
+  },
+  {
+    "path": "docs/0003-dependent-typing-integration.md",
+    "bytes": 4161,
+    "sha256": "263faa7eeb9790887fc6099901d6c5f0d67ba9dc7de71f21fad86bbdfb04e989"
   },
   {
     "path": "docs/kernel-correspondence.md",
-    "bytes": 7652,
-    "sha256": "524a5223a9057b839445eebab35d607c9969c33071dfceb31023f41ba2ffc737"
+    "bytes": 8485,
+    "sha256": "6890a89b34fe61770fcd1e903ca4890d09d52b85119d35857d97fa0ce20f2076"
   },
   {
     "path": "docs/remote-access.md",
-    "bytes": 1984,
-    "sha256": "ba745a3cc101d265e10a46333c4d756e5f6a74981bdbda027a59abb5c731307c"
+    "bytes": 2483,
+    "sha256": "53dd5747e70db911c03caca18fadf3a0b03b25ed1bda07c9676bd7e830b47d6c"
   },
   {
     "path": "docs/rust-v1-correspondence.md",
@@ -111,8 +116,8 @@
   },
   {
     "path": "docs/validation.md",
-    "bytes": 4301,
-    "sha256": "f4e8dee70da73d29f73b1112c009d3ab611129c83faef7519a0c401db00fce1e"
+    "bytes": 5920,
+    "sha256": "2ff92d9687b860d02c9d61a2879b8e18a75490388841cd88829cf196b5cb2697"
   },
   {
     "path": "kernel/README.md",
@@ -126,13 +131,18 @@
   },
   {
     "path": "oracles/Generate.lean",
-    "bytes": 6165,
-    "sha256": "bc52eab65cdf1bbb94ba9eae34dc21b2b73bfc1eb3e6705f12cd67239bed027f"
+    "bytes": 7110,
+    "sha256": "414d41b9062b5de7208709c4a10fce777f61cad3231d552df68406be7e209695"
   },
   {
     "path": "oracles/RustBaseline.lean",
     "bytes": 3829,
     "sha256": "18a0297905ea01ebef399afd55ebce1654b13147e1fefe59406fb2ee13a8bbd9"
+  },
+  {
+    "path": "oracles/ValidateTypingRefusals.lean",
+    "bytes": 8060,
+    "sha256": "50858a5b4f1f5ba131f70bdb0406b03277c04905628bef651271508c763acc63"
   },
   {
     "path": "policy/README.md",
@@ -161,22 +171,27 @@
   },
   {
     "path": "schemas/typing-v1.md",
-    "bytes": 577,
-    "sha256": "20f7a9265fbe91a75ff9fee5767fc15989939bee7c325627bde394d628f86a59"
+    "bytes": 1896,
+    "sha256": "97b353db9b3b8434471ca322725ab6bfd4b895c1b02a7cc259800f79798586cd"
   },
   {
     "path": "tools/acceptance.py",
-    "bytes": 5829,
-    "sha256": "48356cd658b086f3667cebea84da15128679c9102ae7dcf405785f50304dc57d"
+    "bytes": 6042,
+    "sha256": "dc923010b637f841b90547ba23d919471983d5aa9effe6ab39b6c4054494c386"
   },
   {
     "path": "tools/check_provenance.py",
     "bytes": 2933,
-    "sha256": "2d3440c103402bb65631c28f4dbe848855c9807bcafcce8ad01b31ca174b69e1"
+    "sha256": "8c7a7d022642df549468ab7fa3b86ebcd5c9b80f36a210b8ed925faa16e593a9"
   },
   {
     "path": "tools/estate-audit.sh",
     "bytes": 776,
     "sha256": "3d5dd7324086ac821feb31800f7cea8833ff206d149e8cff7313f10ab58be1e6"
+  },
+  {
+    "path": "tools/test_acceptance.py",
+    "bytes": 2195,
+    "sha256": "3a06e772561a84552b28bc7d548fb033a97712c1e8f9c89250edce78db1bf7d8"
   }
 ]

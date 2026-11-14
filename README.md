@@ -14,7 +14,7 @@ standard library; no Dune, Opam package or native compiler is required.
 
 ```sh
 make test                 # Compile and replay all OCaml tests and source hashes
-make test-lean            # Also regenerate both trusted Lean fixture corpora
+make test-lean            # Also regenerate Lean fixtures and strictly replay typing
 make audit                # Fetch and verify the pinned external estate auditor
 make acceptance           # Write exact-source local logs and an unsigned receipt
 ```
@@ -52,9 +52,11 @@ wrong versions, failed generation and changed fixture bytes fail the command.
 | [Architecture](ARCHITECTURE.md) | Estate authority and language boundaries |
 | [Repository identity](docs/remote-access.md) | Accessible project name and publication history |
 
-The inherited corpus has 144 conversion, 13 typing and 7 environment vectors.
-The imported Rust baseline adds 19 rows, including two designated Lean-true /
-βζ-false cases for function η and proof irrelevance. The local suite also runs
+The extended corpus has 144 conversion, 40 typing and 7 environment vectors.
+The dependent-typing cases cover zero to eight intervening binders, with exact
+wrong-binder type-mismatch rejections in both OCaml and the supplementary Lean
+replay. The imported Rust baseline adds 19 rows, including two designated
+Lean-true / βζ-false cases for function η and proof irrelevance. The local suite also runs
 1,024 deterministic generated cases and adversarial boundary controls; those
 properties are internal checks, not Lean-checked theorems.
 

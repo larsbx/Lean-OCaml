@@ -34,6 +34,7 @@ if "$regenerate"; then
     *) printf '%s\n' 'Lean version or commit differs from the pinned oracle.' >&2; exit 2 ;;
   esac
 fi
+python3 tools/test_acceptance.py
 python3 tools/check_provenance.py
 build=$(mktemp -d)
 trap 'rm -rf "$build"' EXIT
@@ -55,6 +56,7 @@ if "$regenerate"; then
   diff -u conformance/generated.tsv "$build/generated.tsv"
   diff -u conformance/generated.tsv.types "$build/generated.tsv.types"
   diff -u conformance/generated.tsv.defs "$build/generated.tsv.defs"
+  "$lean_executable" --run oracles/ValidateTypingRefusals.lean conformance/generated.tsv.types
   "$lean_executable" --run oracles/RustBaseline.lean "$build/rust-v1.tsv"
   diff -u conformance/rust-v1.tsv "$build/rust-v1.tsv"
   printf '%s\n' 'Pinned Lean regeneration passed: all four fixture files match byte for byte'

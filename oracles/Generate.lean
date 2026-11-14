@@ -80,8 +80,23 @@ def main (args : List String) : IO Unit := do
     ("binder-not-type", lam (bind (v 0)) (v 0), none),
     ("pi-body-not-type", pi ty (bind (v 0)), none)
   ]
+  let mut generatedTypes := #[]
+  for depth in [0:9] do
+    -- A and B are independent type variables. The argument has type A in
+    -- the positive case and type B in the negative case.
+    let domain := v (depth + 2)
+    let argument := v depth
+    let identity := lam domain (v 0)
+    let direct := Expr.app identity argument
+    let wrapped := Expr.letE `y domain direct (v 0) false
+    let pads := fun binder body => Nat.rec body (fun _ inner => binder ty inner) depth
+    let close := fun domain body => bind (bind (lam domain (pads lam body)))
+    let expected := pi ty (pi ty (pi (v 1) (pads pi domain)))
+    generatedTypes := generatedTypes.push (s!"depth-{depth}-beta", close (v 1) direct, some expected)
+    generatedTypes := generatedTypes.push (s!"depth-{depth}-zeta", close (v 1) wrapped, some expected)
+    generatedTypes := generatedTypes.push (s!"depth-{depth}-wrong-binder", close (v 0) direct, none)
   let mut typeRows := #[]
-  for (name, expr, expected) in cases do
+  for (name, expr, expected) in cases ++ generatedTypes.toList do
     let .ok input := encode expr | throw (IO.userError s!"input encoding failed: {name}")
     match Kernel.check env {} expr, expected with
     | .ok actual, some expected =>
