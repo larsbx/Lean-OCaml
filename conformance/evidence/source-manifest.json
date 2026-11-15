@@ -26,8 +26,8 @@
   },
   {
     "path": "LANGUAGE_BOUNDARIES.md",
-    "bytes": 1544,
-    "sha256": "066bf29b8be6e2a677a64ac548bcbfd37d740aaebc9f73c7712f23f2c979342b"
+    "bytes": 1475,
+    "sha256": "d12e3ef8d0f9c97bb68dfa78cd23fa1f06c8d93aee38c45d59d269216e90ffd0"
   },
   {
     "path": "Makefile",
@@ -37,7 +37,7 @@
   {
     "path": "README.md",
     "bytes": 3740,
-    "sha256": "422f06209d7a2e4cd0dec85a4ee69f4f2c8ff98770d9b5380b5d3b20d959ac7a"
+    "sha256": "457c29588b3e1a70a6ee43844766dbed749d290294f80eed94ff2003b838bdb4"
   },
   {
     "path": "conformance/adversarial.ml",
@@ -51,8 +51,8 @@
   },
   {
     "path": "conformance/generated.tsv.defs",
-    "bytes": 273,
-    "sha256": "689929b0bd8e6a3ddf43069b092d73189588743b960dd68153e5855da1394113"
+    "bytes": 319,
+    "sha256": "cd376cfe51368bd07fdedeca8860de2f0db3caff22010a6a65d2663ee83f932e"
   },
   {
     "path": "conformance/generated.tsv.types",
@@ -61,18 +61,18 @@
   },
   {
     "path": "conformance/provenance.json",
-    "bytes": 5199,
-    "sha256": "67c50d8a0742af97d4fd113e0e70b2d21096529665224287a494892b7c5abfbc"
+    "bytes": 5719,
+    "sha256": "24355c439d78d1c6e20b3eaaed9eca1200e8b5de6a6ed9c0f73d589001ea7eaa"
   },
   {
     "path": "conformance/replay.ml",
-    "bytes": 13145,
-    "sha256": "06aae702f0d992624eaf5266ab01a02cb0f5976a6b658f7ff7f09ccf098a0f15"
+    "bytes": 12496,
+    "sha256": "54afe660e9083e2459811587767b021d9e606fd069f11e69ec3bca200ecce646"
   },
   {
     "path": "conformance/run.sh",
-    "bytes": 2759,
-    "sha256": "ab561ee73b24b234307f004a3d49132eabe9f3310085386d22a3960eb7c7b923"
+    "bytes": 2661,
+    "sha256": "64fc06eaec7d60e12636bcbb6d7cca9006db195085061b5b24e6207d0d7b6496"
   },
   {
     "path": "conformance/rust-v1.tsv",
@@ -101,13 +101,13 @@
   },
   {
     "path": "docs/0004-definition-refusal-evidence.md",
-    "bytes": 3920,
-    "sha256": "e7d6289144c8906946355b06ed84182e128a3e7c80cc6b9a06b34bfe68290936"
+    "bytes": 3974,
+    "sha256": "89214473e95fe78df440cebfa40011bb0931618f3e125082286cb9ac533c52e5"
   },
   {
     "path": "docs/kernel-correspondence.md",
-    "bytes": 9104,
-    "sha256": "6526ebc1396c3faa9387bb00c9c27702a7ac7661ca7c8cea44811ed88363fe5e"
+    "bytes": 8990,
+    "sha256": "21a5f3420aee8d2d8cabc274ae54e44eeb439e8959be7b7db18f3b529d4b6e2d"
   },
   {
     "path": "docs/remote-access.md",
@@ -121,8 +121,8 @@
   },
   {
     "path": "docs/validation.md",
-    "bytes": 6532,
-    "sha256": "54a0558a455f5865ebd068feafebaf5112d137b57f0f9c8030c3e6bfad96a514"
+    "bytes": 6331,
+    "sha256": "89923c2d50fbf800fc700c25512e51740e4280eb1192cd2680ba98a792f1986d"
   },
   {
     "path": "kernel/README.md",
@@ -136,18 +136,13 @@
   },
   {
     "path": "oracles/Generate.lean",
-    "bytes": 7110,
-    "sha256": "414d41b9062b5de7208709c4a10fce777f61cad3231d552df68406be7e209695"
+    "bytes": 10520,
+    "sha256": "4fd12ab3bae13c8c3f03afd03d98cf5979b4430b79b7f23515932b692d722e80"
   },
   {
     "path": "oracles/RustBaseline.lean",
     "bytes": 3829,
     "sha256": "18a0297905ea01ebef399afd55ebce1654b13147e1fefe59406fb2ee13a8bbd9"
-  },
-  {
-    "path": "oracles/ValidateDefinitionRefusals.lean",
-    "bytes": 9814,
-    "sha256": "b6c66808d8439f36120761673e2407aefe990bc2c2b01d58487eae5eb35cc7d5"
   },
   {
     "path": "oracles/ValidateTypingRefusals.lean",
@@ -176,13 +171,18 @@
   },
   {
     "path": "schemas/definitions-v1.md",
-    "bytes": 2957,
-    "sha256": "228eeb449837c74b8bfbdb9bccb07e51ac2d2c38b7d4181c1c3c9644715c255b"
+    "bytes": 817,
+    "sha256": "fb91fb98d5ad9c3e447e8bc890a692c5422f8681576605208f6b167bf29c4efb"
+  },
+  {
+    "path": "schemas/definitions-v2.md",
+    "bytes": 1680,
+    "sha256": "9acc4ed5102223f0edd34a822b39296249071abe2c0a43465ae264d78ae0f459"
   },
   {
     "path": "schemas/typing-v1.md",
-    "bytes": 1896,
-    "sha256": "97b353db9b3b8434471ca322725ab6bfd4b895c1b02a7cc259800f79798586cd"
+    "bytes": 1886,
+    "sha256": "32c211e82f4e3d361dac5e674672e2b999c6316e7f920cb0a1747af996bcdf80"
   },
   {
     "path": "tools/acceptance.py",
@@ -191,8 +191,8 @@
   },
   {
     "path": "tools/check_provenance.py",
-    "bytes": 2933,
-    "sha256": "8c7a7d022642df549468ab7fa3b86ebcd5c9b80f36a210b8ed925faa16e593a9"
+    "bytes": 3481,
+    "sha256": "78b730a430b73906e3df23f8d696d28f43f8f3cf54612cbee4cbba4d70a6342b"
   },
   {
     "path": "tools/estate-audit.sh",

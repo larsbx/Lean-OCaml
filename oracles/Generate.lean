@@ -28,6 +28,59 @@ def encode : Expr → Except String String
     return s!"t {← encode domain} {← encode value} {← encode body}"
   | _ => throw "unsupported generator expression"
 
+inductive DefinitionOutcome where
+  | accepted
+  | alreadyDeclared
+  | unknownConstant
+  | declTypeMismatch
+  | typeExpected
+deriving BEq, Repr
+
+def DefinitionOutcome.tag : DefinitionOutcome → String
+  | .accepted => "accepted"
+  | .alreadyDeclared => "alreadyDeclared"
+  | .unknownConstant => "unknownConstant"
+  | .declTypeMismatch => "declTypeMismatch"
+  | .typeExpected => "typeExpected"
+
+def definitionOutcome : Except Kernel.Exception Environment → Option DefinitionOutcome
+  | .ok _ => some .accepted
+  | .error (.alreadyDeclared ..) => some .alreadyDeclared
+  | .error (.unknownConstant ..) => some .unknownConstant
+  | .error (.declTypeMismatch ..) => some .declTypeMismatch
+  | .error (.typeExpected ..) => some .typeExpected
+  | .error _ => none
+
+def checkedDefinition (env : Environment) (name : Name) (type value : Expr)
+    (maxRecDepth : USize := 1000) : Except Kernel.Exception Environment :=
+  env.addDeclCore 100000 maxRecDepth (.defnDecl {
+    name, levelParams := [], type, value, hints := .abbrev, safety := .safe
+  }) none (doCheck := true)
+
+def checkDefinitionControls (env : Environment)
+    (refusals : Array (DefinitionOutcome × Kernel.Exception)) : IO Unit := do
+  let prop := Expr.sort .zero
+  let unrelated := checkedDefinition env `ocamlRefNonFunction ty (.app prop prop)
+  let .error (.funExpected ..) := unrelated
+    | throw (IO.userError "definition control did not produce funExpected")
+  let exhausted := checkedDefinition env `ocamlRefLowRecursion ty (wrap 64 prop) 4
+  let .error .deepRecursion := exhausted
+    | throw (IO.userError "definition control did not exhaust kernel recursion")
+  let failures := [
+    unrelated, exhausted,
+    .error .deterministicTimeout, .error .excessiveMemory, .error .interrupted
+  ]
+  let mut checks := 0
+  for (required, _) in refusals do
+    let alternatives := refusals.toList.filterMap fun (other, error) =>
+      if other == required then none else some (.error error)
+    let injected := Except.error (.other required.tag)
+    for result in .ok env :: injected :: failures ++ alternatives do
+      if definitionOutcome result == some required then
+        throw (IO.userError s!"unrelated outcome satisfied {required.tag}")
+      checks := checks + 1
+  IO.println s!"Strict Lean definition replay passed: 2 insertions, {refusals.size} exact semantic refusals, 1 inference, {checks} refusal controls"
+
 def main (args : List String) : IO Unit := do
   let [out] := args | throw (IO.userError "expected output path")
   initSearchPath (← findSysroot)
@@ -110,35 +163,51 @@ def main (args : List String) : IO Unit := do
   let alias := Name.mkSimple "ocamlRefAlias"
   let id := Name.mkSimple "ocamlRefId"
   let missing := Name.mkSimple "ocamlRefMissing"
-  let definitions : List (Name × Expr × Expr × Bool) := [
-    (alias, ty, prop, true),
-    (id, pi (.const alias []) (.const alias []), lam (.const alias []) (v 0), true),
-    (alias, ty, prop, false),
-    (missing, ty, .const missing [], false),
-    (Name.mkSimple "ocamlRefMismatch", ty, ty, false),
-    (Name.mkSimple "ocamlRefNonType", lam ty (v 0), prop, false)
+  let definitions : List (Name × Expr × Expr × DefinitionOutcome) := [
+    (alias, ty, prop, .accepted),
+    (id, pi (.const alias []) (.const alias []), lam (.const alias []) (v 0), .accepted),
+    (alias, ty, prop, .alreadyDeclared),
+    (missing, ty, .const missing [], .unknownConstant),
+    (Name.mkSimple "ocamlRefMismatch", ty, ty, .declTypeMismatch),
+    (Name.mkSimple "ocamlRefNonType", lam ty (v 0), prop, .typeExpected)
   ]
+  let initialEnv := env
   let mut env := env
   let mut definitionRows := #[]
+  let mut inserted := #[]
+  let mut refusals := #[]
   for (name, type, value, expected) in definitions do
-    let declaration := Declaration.defnDecl {
-      name, levelParams := [], type, value, hints := .abbrev, safety := .safe
-    }
-    match env.addDeclCore 100000 1000 declaration none with
+    let result := checkedDefinition env name type value
+    let observed := definitionOutcome result
+    unless observed == some expected do
+      throw (IO.userError s!"{name}: expected {expected.tag}, got {repr observed}")
+    match result with
     | .ok next =>
-      unless expected do throw (IO.userError s!"unexpected Lean definition success: {name}")
       env := next
-    | .error _ =>
-      if expected then throw (IO.userError s!"unexpected Lean definition failure: {name}")
+      inserted := inserted.push (name, type, value)
+    | .error error =>
+      if expected != .alreadyDeclared && env.contains name then
+        throw (IO.userError s!"refused definition entered the environment: {name}")
+      refusals := refusals.push (expected, error)
+    if initialEnv.contains name then
+      throw (IO.userError s!"definition name present in initial snapshot: {name}")
+    for (acceptedName, acceptedType, acceptedValue) in inserted do
+      let some (.defnInfo entry) := env.find? acceptedName
+        | throw (IO.userError s!"accepted definition missing: {acceptedName}")
+      unless entry.type == acceptedType && entry.value == acceptedValue && entry.levelParams.isEmpty do
+        throw (IO.userError s!"accepted definition changed: {acceptedName}")
     let .ok (t, v) := Prod.mk <$> encode type <*> encode value
       | throw (IO.userError "definition encoding failed")
-    definitionRows := definitionRows.push s!"def\t{name}\t{t}\t{v}\t{expected}"
+    definitionRows := definitionRows.push s!"def\t{name}\t{t}\t{v}\t{expected.tag}"
   let term := Expr.const id []
   let expected := pi prop prop
+  let .ok kind := Kernel.check env {} expected | throw (IO.userError "expected type failed to check")
+  let .ok (.sort _) := Kernel.whnf env {} kind | throw (IO.userError "expected expression is not a type")
   let .ok actual := Kernel.check env {} term | throw (IO.userError "lookup failed")
   let .ok true := Kernel.isDefEq env {} actual expected
     | throw (IO.userError "lookup type disagrees")
   let .ok (term, expected) := Prod.mk <$> encode term <*> encode expected
     | throw (IO.userError "lookup encoding failed")
   definitionRows := definitionRows.push s!"infer\t{term}\t{expected}"
+  checkDefinitionControls env refusals
   IO.FS.writeFile (out ++ ".defs") (String.intercalate "\n" definitionRows.toList ++ "\n")

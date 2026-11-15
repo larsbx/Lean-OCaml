@@ -1,7 +1,7 @@
 {
   "schema": "lean-ocaml.local-acceptance.v1",
-  "base_revision": "08340ce24bcdbb6c8563152a7ea640406d67887b",
-  "source_tree_sha256": "1f1079c48541abd4f87ad43ff23b31d2d8f4b9b1beb13fe7d3ad32c4931e3f84",
+  "base_revision": "986874105d0136e7fca4440eb4392eba75cce6f8",
+  "source_tree_sha256": "79931b5c426b2333b753639167c8b655ffb87dc5d36b9ec4067dfdcafafd2e27",
   "source_manifest": "conformance/evidence/source-manifest.json",
   "evidence_directory_excluded_from_source_digest": "conformance/evidence/",
   "source_digest_encoding": "SHA-256 of sorted file objects with path, bytes, sha256; canonical compact JSON with sorted keys",
@@ -19,12 +19,12 @@
         "conformance/run.sh",
         "--lean"
       ],
-      "started_at_utc": "2026-11-15T00:09:46.104159+00:00",
-      "finished_at_utc": "2026-11-15T00:10:39.712297+00:00",
+      "started_at_utc": "2026-11-15T00:16:16.337741+00:00",
+      "finished_at_utc": "2026-11-15T00:16:24.126138+00:00",
       "status": "passed",
       "exit_code": 0,
       "log": "conformance/evidence/conformance.log",
-      "log_sha256": "6f6684c3da911ef7bd5102e25853e4ff0af8cba33b42db2561eecb9caecd40b0"
+      "log_sha256": "3161477194504edccef7ea20cb740282de1f2c7ec3ec14f971d76f8f1ebd2566"
     },
     {
       "command": [
@@ -32,15 +32,15 @@
         "tools/estate-audit.sh",
         "/workspace/scratch/bfab66fc21c4/.tooling/audit_estate_layout.py"
       ],
-      "started_at_utc": "2026-11-15T00:10:39.713119+00:00",
-      "finished_at_utc": "2026-11-15T00:10:39.825999+00:00",
+      "started_at_utc": "2026-11-15T00:16:24.126389+00:00",
+      "finished_at_utc": "2026-11-15T00:16:24.232786+00:00",
       "status": "passed",
       "exit_code": 0,
       "log": "conformance/evidence/estate-audit.log",
-      "log_sha256": "6972b2921d099a3adf59b4014035f0fa95618ad4632961c2e0ff6ac874a5bdab"
+      "log_sha256": "ccd2a42e19be9b6fd64dbb8bbe6a737eab90c64bc5a9fee18409cb70cf3ae5ad"
     }
   ],
   "source_unchanged_during_acceptance": true,
   "status": "passed",
-  "completed_at_utc": "2026-11-15T00:10:39.839179+00:00"
+  "completed_at_utc": "2026-11-15T00:16:24.238237+00:00"
 }

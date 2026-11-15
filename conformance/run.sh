@@ -57,7 +57,6 @@ if "$regenerate"; then
   diff -u conformance/generated.tsv.types "$build/generated.tsv.types"
   diff -u conformance/generated.tsv.defs "$build/generated.tsv.defs"
   "$lean_executable" --run oracles/ValidateTypingRefusals.lean conformance/generated.tsv.types
-  "$lean_executable" --run oracles/ValidateDefinitionRefusals.lean conformance/generated.tsv.defs
   "$lean_executable" --run oracles/RustBaseline.lean "$build/rust-v1.tsv"
   diff -u conformance/rust-v1.tsv "$build/rust-v1.tsv"
   printf '%s\n' 'Pinned Lean regeneration passed: all four fixture files match byte for byte'

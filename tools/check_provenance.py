@@ -14,29 +14,39 @@ EXPECTED_PATHS = {
     "conformance/generated.tsv", "conformance/generated.tsv.types",
     "conformance/generated.tsv.defs",
 }
+DERIVED_PATHS = {"oracles/Generate.lean", "conformance/generated.tsv.defs"}
 
 def verify() -> None:
     manifest = json.loads((ROOT / "conformance/provenance.json").read_text())
-    if manifest["schema"] != "lean-ocaml.source-provenance.v1":
+    if manifest["schema"] != "lean-ocaml.source-provenance.v2":
         raise ValueError("unknown source-provenance schema")
     records = manifest["files"]
     if len(records) != len(EXPECTED_PATHS) or {r["path"] for r in records} != EXPECTED_PATHS:
         raise ValueError("missing, duplicate or unexpected provenance paths")
     for record in records:
-        path = ROOT / record["path"]
+        name = record["path"]
+        path = ROOT / name
         if path.is_symlink() or not path.is_file():
             raise ValueError(f"expected regular source file: {record['path']}")
         if not re.fullmatch(r"[0-9a-f]{40}", record["revision"]):
             raise ValueError(f"unfixed source revision: {record['path']}")
         expected_url = (f"https://github.com/{record['repository']}/blob/"
                         f"{record['revision']}/{record['upstream_path']}")
-        if record["source_url"] != expected_url or record["copied_byte_for_byte"] is not True:
+        if record["source_url"] != expected_url:
             raise ValueError(f"inconsistent source mapping: {record['path']}")
+        if not re.fullmatch(r"[0-9a-f]{64}", record["sha256"]) or not re.fullmatch(
+            r"[0-9a-f]{40}", record["git_blob_sha1"]
+        ):
+            raise ValueError(f"invalid upstream byte identity: {name}")
+        copied = name not in DERIVED_PATHS
+        if record["copied_byte_for_byte"] is not copied or ("local" in record) == copied:
+            raise ValueError(f"inconsistent derivation record: {name}")
+        expected = record if copied else record["local"]
         data = path.read_bytes()
         blob = b"blob " + str(len(data)).encode() + b"\0" + data
-        if hashlib.sha256(data).hexdigest() != record["sha256"]:
+        if hashlib.sha256(data).hexdigest() != expected["sha256"]:
             raise ValueError(f"SHA-256 mismatch: {record['path']}")
-        if hashlib.sha1(blob).hexdigest() != record["git_blob_sha1"]:
+        if hashlib.sha1(blob).hexdigest() != expected["git_blob_sha1"]:
             raise ValueError(f"Git blob mismatch: {record['path']}")
     if (ROOT / ".ocaml-version").read_text().strip() != manifest["ocaml_version"]:
         raise ValueError("OCaml version differs from provenance")
@@ -47,7 +57,7 @@ def verify() -> None:
     for path, count in counts.items():
         if len((ROOT / path).read_text().splitlines()) != count:
             raise ValueError(f"fixture count changed: {path}")
-    print("Source provenance passed: 7 byte-identical source artifacts, pinned toolchains and corpus counts")
+    print("Source provenance passed: 5 byte-identical imports, 2 derived artifacts, pinned toolchains and corpus counts")
 
 if __name__ == "__main__":
     try:

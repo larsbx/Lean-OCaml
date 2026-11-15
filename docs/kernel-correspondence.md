@@ -107,9 +107,9 @@ subsystem does not fill those gaps.
 
 ## Provenance and evidence
 
-[provenance.json](../conformance/provenance.json) records seven byte-identical
-source artifacts, their original paths, immutable revisions, Git blob IDs and
-SHA-256 hashes. `conformance/rust-v1.tsv` copies `oracle/cases.tsv` from Rust
+[provenance.json](../conformance/provenance.json) records five byte-identical
+imports and two derived artifacts, their original paths, immutable revisions,
+Git blob IDs and SHA-256 hashes. `conformance/rust-v1.tsv` copies `oracle/cases.tsv` from Rust
 27ececb; `oracles/RustBaseline.lean` copies its `oracle/Kernel.lean` under the
 user's explicit reuse instruction. This is attributed oracle source, not an
 imported runtime kernel. The canonical estate auditor remains external.
@@ -118,15 +118,13 @@ The baseline oracle uses trusted `Kernel.check`, `Kernel.whnf` and
 `Kernel.isDefEq` on closed typed cases, and `Expr.instantiate1` on open syntax.
 Its 19 rows contain nine matching equalities, two designated disagreements,
 four WHNF results and four substitutions. The extended 191-row corpus
-(144 conversion, 40 typing, 7 environment) has a separate generator imported
+(144 conversion, 40 typing, 7 environment) has a separate generator derived
 from PR #2 at f180db5a47e185ea3d5390bede2d76a2b80a9024. Both are regenerated
 with pinned Lean and compared byte for byte. A supplementary strict Lean
 replay checks all 40 typing rows and requires the designated semantic errors
-for all 14 refusals. A separate strict definition checker replays the seven
-ordered environment rows and requires the designated semantic error for all
-four definition refusals. Both validators preserve the imported generator's
-bytes while strengthening its generic negative-result evidence. The
-1,024 generated OCaml cases are
+for all 14 refusals. The generator checks the seven ordered environment rows
+and records the designated kernel exception for each of the four definition
+refusals. The 1,024 generated OCaml cases are
 internal properties and receive no Lean checking. See
 [validation.md](validation.md) for the execution record.
 
@@ -144,6 +142,6 @@ The reference-definition extension distinguishes duplicate names, unavailable
 self-references, declared-type mismatches and invalid type annotations. The
 OCaml and Lean replays check persistence of prior environment snapshots after
 refusal. Those exact fixture mappings and their limited environment scope are
-specified in [definitions-v1](../schemas/definitions-v1.md) and
+specified in [definitions v2](../schemas/definitions-v2.md) and
 [ADR 0004](0004-definition-refusal-evidence.md). Lean's checked oracle insertion
 does not introduce OCaml declaration or theorem admission.

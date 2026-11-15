@@ -6,7 +6,6 @@
 | --- | --- | --- |
 | Extended conformance | 144 conversion, 40 typing, 7 environment vectors; 16 inherited controls | Preserve existing main behavior; the successor overflow control now expects `Index_overflow`. |
 | OCaml typing refusal classification | 7 injected controls | Wrong-binder cases require `Type_mismatch`; other semantic errors, resource failures and successful inference cannot satisfy them. |
-| OCaml definition checks | 55 outcome-classification, 8 corpus-integrity and 27 snapshot-preservation controls | Exact rejection causes, fixed sequence and preservation of prior bindings/snapshots after refusal. |
 | Rust baseline | 19 rows: 9 matching equality, 2 designated disagreements, 4 WHNF, 4 substitution | Finite trusted-oracle contract, including its limits. |
 | Harness rejection | 12 controls | Missing/duplicate rows, malformed expressions and altered/unregistered disagreements are rejected. |
 | OCaml adversarial | 75 named controls | Scope, capture, cyclic values, sharing, negative integers, overflow, erased invalid children, divergence and intermediate height. |
@@ -14,8 +13,8 @@
 | Generated properties | 1,024 cases and 10,240 assertions | Internal scoped-syntax properties; not Lean-checked and not necessarily well typed. |
 | Fresh Lean regeneration | Four fixture files from two generators | Pinned trusted execution must reproduce exact fixture bytes. |
 | Strict Lean typing replay | All 40 typing rows: 26 accepted and 14 exact semantic refusals; 5 injected classifier controls | Nine wrong-binder cases require `appTypeMismatch`; time, memory, recursion, interruption and internal failures cannot count as typing evidence. |
-| Strict Lean definition replay | All 7 environment rows: 2 accepted definitions, 4 exact semantic refusals and 1 final inference; 5 injected classifier controls | Checked insertion, designated exceptions, retained earlier bindings and absence of refused fresh names. |
-| Provenance | Seven source artifacts | Revisions, paths, Git blob identity, SHA-256 and toolchain pins. |
+| Definition replay | 2 insertions, 4 exact semantic refusals, 1 inference; 40 Lean and 55 OCaml outcome controls, 8 OCaml corpus controls | Ordered [definition outcomes](../schemas/definitions-v2.md) must agree with the designated categories. Prior environments survive refusal. |
+| Provenance | Five byte-identical imports and two derived artifacts | Immutable origins, local Git blob IDs and SHA-256 hashes, and toolchain pins. |
 | Source receipt regression checks | 3 Python tests | Checkout/worktree metadata produce the same source hash; source file and directory symlinks are refused. |
 | Estate layout | Pinned external auditor | Local manifest/layout conformance only. |
 
@@ -59,11 +58,10 @@ receipt records the versions actually executed.
 ## Boundaries
 
 All OCaml input children are validated before erasing reductions. OCaml resource
-refusals never count as inequality or expected typing/definition rejection.
-The supplementary Lean checkers require the designated semantic exception for
-every negative typing and definition row; each validator's five classifier
-controls inject exceptions rather than induce actual resource exhaustion.
-Height in the OCaml reference is limited to
+refusals never count as inequality or expected typing rejection. The supplementary
+Lean checker requires the designated semantic exception for every negative
+typing row; its five classifier controls inject exceptions rather than induce
+actual resource exhaustion. Height in the OCaml reference is limited to
 128 (leaf height one), including constructed intermediates and active evaluator
 contexts. Work units are implementation-specific. `Limit_exceeded` also covers
 the defensive runtime stack-overflow handler, so it does not prove divergence.
@@ -74,19 +72,18 @@ and declaration/theorem admission are unsupported. The retained reference
 inference/environment subsystem is not a general Lean kernel. Neither finite
 agreement nor estate layout conformance proves complete compatibility.
 
-The byte-preserved `Generate.lean` still accepts generic exceptions for its
-negative rows. Its output alone is insufficient to establish the intended
-semantic refusal. `ValidateTypingRefusals.lean` and
-`ValidateDefinitionRefusals.lean` independently replay those same fixtures
-and require their precise rejection causes. The definition checker uses
-normal checked Lean insertion; it adds no OCaml admission authority. See
-[definitions-v1](../schemas/definitions-v1.md) for the exact four-case mapping.
+The definition lane checks the return from pinned Lean's checked
+[`Environment.addDeclCore`](https://github.com/leanprover/lean4/blob/5045d0056413266e57c625dcd7c365b10e377c52/src/Lean/Environment.lean).
+Controls cross-check the four observed semantic errors, exercise a separate
+`funExpected` failure and force real `deepRecursion` with a low recursion
+budget. Injected timeout, memory, interruption and `other` exceptions also
+fail to satisfy any expected refusal. The `other` payload repeats each expected
+tag to guard against message matching. OCaml uses a real zero-fuel
+`Limit_exceeded` result and injects incompatible semantic and bounded-reference
+errors into the same matcher used by fixture replay.
 
-This increment starts from main `08340ce24bcdbb6c8563152a7ea640406d67887b`
-and replaces the earlier receipt with a fresh run over the changed evidence
-code and documentation. The fixture inventory remains 210 unique rows:
-191 extended OCaml rows plus the 19-row Rust baseline, including its two
-declared disagreements. Supplementary replays do not increase that fixture
-count. The receipt's baseline revision is the local checkout parent;
-`conformance/provenance.json` records it separately from the historical
-dependent-typing integration and original imported artifact revisions.
+All four fixture files are regenerated. The 210-row inventory includes
+191 extended rows and the 19-row Rust baseline, including its two declared
+disagreements. The regenerate-and-compare gate checks the new definition tags
+against the committed fixture. `conformance/provenance.json` preserves the
+original generator and corpus identities alongside the new local digests.
