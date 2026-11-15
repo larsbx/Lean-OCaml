@@ -112,23 +112,15 @@ let replay_types path =
     List.iter (fun (id, _) ->
       check ("missing dependent refusal: " ^ id) (Hashtbl.mem ids id)) dependent_refusals)
 
-(* This is the fixed definitions-v1 inventory, including order and verdicts.
-   The repeated alias is intentional: first insertion, then duplicate refusal. *)
-let definition_corpus = [
-  "def\tocamlRefAlias\ts1\ts0\ttrue";
-  "def\tocamlRefId\tp cocamlRefAlias cocamlRefAlias\tl cocamlRefAlias v0\ttrue";
-  "def\tocamlRefAlias\ts1\ts0\tfalse";
-  "def\tocamlRefMissing\ts1\tcocamlRefMissing\tfalse";
-  "def\tocamlRefMismatch\ts1\ts1\tfalse";
-  "def\tocamlRefNonType\tl s1 v0\ts0\tfalse";
-  "infer\tcocamlRefId\tp s0 s0";
-]
-
-let definition_refusals = [
-  "ocamlRefAlias", Duplicate_definition;
-  "ocamlRefMissing", Unknown_constant;
-  "ocamlRefMismatch", Type_mismatch;
-  "ocamlRefNonType", Expected_sort;
+(* The order is part of the environment fixture: the alias is inserted before
+   the identity, then the same alias is submitted a second time. *)
+let definition_cases = [
+  "ocamlRefAlias", "accepted", None;
+  "ocamlRefId", "accepted", None;
+  "ocamlRefAlias", "alreadyDeclared", Some Duplicate_definition;
+  "ocamlRefMissing", "unknownConstant", Some Unknown_constant;
+  "ocamlRefMismatch", "declTypeMismatch", Some Type_mismatch;
+  "ocamlRefNonType", "typeExpected", Some Expected_sort;
 ]
 
 let definition_matches required result =
@@ -137,116 +129,104 @@ let definition_matches required result =
   | Some expected, Error actual -> expected = actual
   | _ -> false
 
-let validate_definition_corpus rows =
-  check "incomplete definition corpus" (List.length rows = List.length definition_corpus);
-  List.iteri (fun index (actual, expected) ->
-    check (Printf.sprintf "unexpected definition row %d" (index + 1))
-      (String.equal actual expected)) (List.combine rows definition_corpus)
-
 let check_definition_refusal_controls () =
-  let errors = [
-    "invalid scope", Invalid_scope;
-    "invalid universe", Invalid_universe;
-    "work limit", Limit_exceeded;
-    "height limit", Height_limit;
-    "index overflow", Index_overflow;
-    "expected sort", Expected_sort;
-    "expected function", Expected_function;
-    "type mismatch", Type_mismatch;
-    "unknown constant", Unknown_constant;
-    "duplicate definition", Duplicate_definition;
-    "invalid name", Invalid_name;
+  let env = empty_environment in
+  let exhausted = define ~fuel:0 env ~name:"fuelControl" ~ty:(Sort 1) ~value:(Sort 0) in
+  check "definition control did not exhaust OCaml fuel" (exhausted = Error Limit_exceeded);
+  let alternatives = [
+    Duplicate_definition; Unknown_constant; Type_mismatch; Expected_sort;
+    Expected_function; Invalid_scope; Invalid_name; Invalid_universe;
+    Height_limit; Index_overflow;
   ] in
-  let count = ref 0 in
-  let reject label required result =
-    check label (not (definition_matches required result));
-    incr count
-  in
-  List.iter (fun (name, expected) ->
-    List.iter (fun (label, actual) ->
-      if actual <> expected then
-        reject (name ^ " rejects " ^ label) (Some expected) (Error actual)) errors;
-    reject (name ^ " rejects insertion success") (Some expected) (Ok empty_environment))
-    definition_refusals;
-  List.iter (fun (label, actual) ->
-    reject ("expected insertion rejects " ^ label) None (Error actual)) errors;
-  !count
+  let count = List.fold_left (fun count (_, tag, required) ->
+    match required with
+    | None -> count
+    | Some expected ->
+        let unrelated = List.filter_map (fun error ->
+          if error = expected then None else Some (Error error)) alternatives in
+        let controls = Ok env :: exhausted :: unrelated in
+        List.iter (fun result ->
+          check (tag ^ " accepted an unrelated OCaml outcome")
+            (not (definition_matches required result))) controls;
+        count + List.length controls
+  ) 0 definition_cases in
+  let rejected_successes = exhausted :: List.map (fun error -> Error error) alternatives in
+  List.iter (fun result ->
+    check "a failed definition satisfied the accepted outcome" (not (definition_matches None result))
+  ) rejected_successes;
+  count + List.length rejected_successes
 
-let check_definition_corpus_controls () =
-  let replace index value = List.mapi (fun i row -> if i = index then value else row)
-      definition_corpus in
-  let controls = [
-    "missing definition row", List.tl definition_corpus;
-    "extra duplicate definition row", List.hd definition_corpus :: definition_corpus;
-    "same-size duplicate replaces identity", replace 1 (List.hd definition_corpus);
-    "reordered refusal rows", List.mapi (fun i row ->
-      if i = 3 then List.nth definition_corpus 4
-      else if i = 4 then List.nth definition_corpus 3 else row) definition_corpus;
-    "refusal relabeled as success", replace 4 "def\tocamlRefMismatch\ts1\ts1\ttrue";
-    "unknown row kind", replace 3 "declare\tocamlRefMissing\ts1\tcocamlRefMissing\tfalse";
-    "malformed expression is not a refusal", replace 5 "def\tocamlRefNonType\ta\ts0\tfalse";
-    "altered final inference", replace 6 "infer\tcocamlRefId\ts0";
-  ] in
-  List.iter (fun (label, rows) ->
-    check label (match validate_definition_corpus rows with
-      | () -> false
-      | exception Failure _ -> true)) controls;
-  List.length controls
-
-let replay_definitions path =
-  let rows = In_channel.with_open_text path In_channel.input_lines in
-  validate_definition_corpus rows;
+let replay_definitions rows =
   let initial = empty_environment in
-  let alias_snapshot = ref initial in
-  let persistence_controls = ref 0 in
-  let observe label condition = check label condition; incr persistence_controls in
-  let replay env line =
-    match String.split_on_char '\t' line with
-    | ["def"; name; ty; value; expected] ->
-        let required = if boolean expected then None
-          else Some (List.assoc name definition_refusals) in
-        let result = define ~fuel:100_000 env ~name ~ty:(expr ty) ~value:(expr value) in
-        check ("OCaml definition disagrees: " ^ name)
-          (definition_matches required result);
-        (match result with
-        | Ok next ->
-            if name = "ocamlRefAlias" then alias_snapshot := next;
-            next
-        | Error _ ->
-            observe (name ^ " refusal preserves alias")
-              (infer_in ~fuel:100_000 env (Lam (Const "ocamlRefAlias", Var 0))
-                = Ok (Pi (Sort 0, Sort 0)));
-            observe (name ^ " refusal preserves identity")
-              (infer_in ~fuel:100_000 env (Const "ocamlRefId") = Ok (Pi (Sort 0, Sort 0)));
-            observe (name ^ " refusal preserves original empty snapshot")
-              (infer_in ~fuel:100_000 initial (Const "ocamlRefAlias") = Error Unknown_constant);
-            observe (name ^ " refusal preserves original snapshot identity absence")
-              (infer_in ~fuel:100_000 initial (Const "ocamlRefId") = Error Unknown_constant);
-            observe (name ^ " refusal preserves alias-only snapshot")
-              (infer_in ~fuel:100_000 !alias_snapshot (Const "ocamlRefId") = Error Unknown_constant);
-            observe (name ^ " refusal preserves earlier alias value")
-              (infer_in ~fuel:100_000 !alias_snapshot (Lam (Const "ocamlRefAlias", Var 0))
-                = Ok (Pi (Sort 0, Sort 0)));
-            if name <> "ocamlRefAlias" then
-              observe (name ^ " refusal does not insert rejected name")
-                (infer_in ~fuel:100_000 env (Const name) = Error Unknown_constant);
-            env)
-    | ["infer"; term; expected] ->
-        check "OCaml named inference disagrees"
-          (infer_in ~fuel:100_000 env (expr term) = Ok (expr expected));
-        env
-    | _ -> failwith "invalid definition vector row"
+  let identity = Const "ocamlRefId" in
+  let alias = Const "ocamlRefAlias" in
+  let identity_type = Pi (Sort 0, Sort 0) in
+  let infer = infer_in ~fuel:100_000 in
+  let check_preserved name env alias_snapshot =
+    check "refusal preserves the active alias"
+      (infer env (Lam (alias, Var 0)) = Ok identity_type);
+    check "refusal preserves the active identity"
+      (infer env identity = Ok identity_type);
+    check "initial snapshot has no alias" (infer initial alias = Error Unknown_constant);
+    check "initial snapshot has no identity" (infer initial identity = Error Unknown_constant);
+    check "alias snapshot retains its alias"
+      (infer alias_snapshot (Lam (alias, Var 0)) = Ok identity_type);
+    check "alias snapshot predates the identity"
+      (infer alias_snapshot identity = Error Unknown_constant);
+    if name <> "ocamlRefAlias" then
+      check ("refused name became visible: " ^ name) (infer env (Const name) = Error Unknown_constant)
   in
-  ignore (List.fold_left replay initial rows);
-  !persistence_controls
+  let rec replay env alias_snapshot cases rows =
+    match cases, rows with
+    | (name, tag, required) :: remaining_cases, line :: remaining_rows ->
+        (match String.split_on_char '\t' line with
+        | ["def"; row_name; ty; value; row_tag] when row_name = name && row_tag = tag ->
+            let result = define ~fuel:100_000 env ~name ~ty:(expr ty) ~value:(expr value) in
+            check ("OCaml definition disagrees: " ^ name ^ " expected " ^ tag)
+              (definition_matches required result);
+            (match result with
+            | Ok next ->
+                let snapshot = if name = "ocamlRefAlias" then next else alias_snapshot in
+                replay next snapshot remaining_cases remaining_rows
+            | Error _ ->
+                check_preserved name env alias_snapshot;
+                replay env alias_snapshot remaining_cases remaining_rows)
+        | _ -> failwith ("invalid definition row: " ^ name ^ " expected " ^ tag))
+    | [], [line] ->
+        (match String.split_on_char '\t' line with
+        | ["infer"; "cocamlRefId"; "p s0 s0"] ->
+            check "OCaml named inference disagrees" (infer env identity = Ok identity_type)
+        | _ -> failwith "invalid final definition inference")
+    | _ -> failwith "invalid definition corpus size"
+  in
+  replay initial initial definition_cases rows
+
+let check_definition_corpus_controls rows =
+  let replace index line = List.mapi (fun i original -> if i = index then line else original) rows in
+  let controls = [
+    List.tl rows;
+    List.hd rows :: rows;
+    replace 1 (List.hd rows);
+    List.mapi (fun i line -> match i with 3 -> List.nth rows 4 | 4 -> List.nth rows 3 | _ -> line) rows;
+    replace 4 "def\tocamlRefMismatch\ts1\ts1\tfalse";
+    replace 4 "def\tocamlRefMismatch\ts1\tcocamlMissingControl\tdeclTypeMismatch";
+    replace 5 "def\tocamlRefNonType\ta\ts0\ttypeExpected";
+    replace 6 "infer\tcocamlRefId\ts0";
+  ] in
+  List.iteri (fun i mutant ->
+    check (Printf.sprintf "definition corpus mutation %d was accepted" (i + 1))
+      (match replay_definitions mutant with () -> false | exception Failure _ -> true)
+  ) controls;
+  List.length controls
 
 let () =
   replay Sys.argv.(1);
   replay_types (Sys.argv.(1) ^ ".types");
-  let definition_persistence_controls = replay_definitions (Sys.argv.(1) ^ ".defs") in
+  let definition_rows = In_channel.with_open_text (Sys.argv.(1) ^ ".defs") In_channel.input_lines in
+  replay_definitions definition_rows;
+  let definition_corpus_controls = check_definition_corpus_controls definition_rows in
   let typing_refusal_controls = check_typing_refusal_controls () in
   let definition_refusal_controls = check_definition_refusal_controls () in
-  let definition_corpus_controls = check_definition_corpus_controls () in
   let ty = Sort 1 in
   let id = Lam (ty, Var 0) in
   let self = Lam (ty, App (Var 0, Var 0)) in
@@ -282,6 +262,5 @@ let () =
   Printf.printf
     "144 Lean conversion, 40 typing, 7 environment vectors, 16 controls and %d typing refusal controls passed\n"
     typing_refusal_controls;
-  Printf.printf
-    "Definition checks passed: %d outcome-classification, %d corpus-integrity and %d snapshot-preservation controls\n"
-    definition_refusal_controls definition_corpus_controls definition_persistence_controls
+  Printf.printf "OCaml definition replay passed: 4 exact semantic refusals, %d refusal and %d corpus controls, prior snapshots preserved\n"
+    definition_refusal_controls definition_corpus_controls

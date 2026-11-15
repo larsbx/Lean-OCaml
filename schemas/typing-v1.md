@@ -20,7 +20,7 @@ For the nine named `depth-0-wrong-binder` through
 cannot count as that intended rejection. All nine IDs must be present.
 The replay's injected-error controls exercise this distinction separately.
 
-The imported generator retains generic exception handling for refusal rows.
+For typing rows the generator retains generic exception handling.
 `oracles/ValidateTypingRefusals.lean`, invoked by `conformance/run.sh --lean`,
 adds strict checking of all 40 typing rows. It requires `funExpected` for
 `nonfunction`, `appTypeMismatch` for `argument-mismatch` and the nine

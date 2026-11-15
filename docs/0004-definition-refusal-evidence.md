@@ -15,11 +15,11 @@ definition cases open.
 
 ## Decision
 
-Start from main `08340ce24bcdbb6c8563152a7ea640406d67887b`. Keep all seven
-imported source artifacts byte-identical and keep the reference core and its
-public interfaces unchanged. Add a separate Lean definition validator and make
-the OCaml replay require the exact sequence and exact refusal policy for every
-definition row.
+PR #4 established exact semantic-refusal checks on the original definition
+fixture. From its merge at `986874105d0136e7fca4440eb4392eba75cce6f8`, extend
+the Lean generator to require exact checked-insertion outcomes and record them
+in the regenerated fixture. OCaml replay requires the ordered sequence and
+the designated error for each refusal.
 
 | Fixture | OCaml error | Lean kernel exception |
 | --- | --- | --- |
@@ -32,7 +32,7 @@ These are exact expectations for these fixtures. They do not prescribe error
 precedence for arbitrary invalid declarations. Unexpected success, a different
 semantic error, or any resource/internal refusal fails the observation.
 
-The trusted validator uses ordinary checked Lean kernel insertion. It verifies
+The generator uses ordinary checked Lean kernel insertion. It verifies
 the final inference against an independently checked expected type and checks
 prior successful bindings after insertion attempts. Both replays exercise
 immutable snapshots and absence of refused fresh names. No unchecked insertion,
@@ -42,23 +42,23 @@ caller-supplied verdict or generic-error acceptance supplies evidence.
 
 The additional checks are wired into the existing acceptance command. Named
 OCaml controls cover each refusal policy against alternate API outcomes,
-malformed corpus sequences and prior-snapshot observations. Lean controls
-reject injected timeout, memory, recursion, interruption and internal
-exceptions. Injection tests validate classification; they do not establish
-whole-process resource isolation.
+malformed corpus sequences, actual fuel exhaustion and prior-snapshot
+observations. Lean controls cross-check observed semantic failures, force a
+`deepRecursion` refusal via a lower recursion budget, and reject injected
+timeout, memory, interruption and internal exceptions.
 
 Fresh local acceptance compiles with OCaml 5.5.1, replays the 210 existing
-fixture rows and all retained adversarial/property controls, executes both
-strict Lean validators, regenerates all four fixture files under Lean 4.34.1,
-checks the seven copied artifact identities, and runs the pinned external
+fixture rows and retained adversarial and property controls, strictly checks
+definition and typing refusals, regenerates all four fixture files under Lean
+4.34.1, verifies five imported and two derived artifacts, and runs the pinned external
 estate auditor. The receipt records actual results and the complete source
 digest. Baseline hosted success is historical evidence for its exact source;
 new hosted results must be reported independently.
 
 The provenance manifest records the current baseline separately from the
 historical dependent-typing integration parents and from each imported
-artifact's original revision. The new validator is original repository source
-covered by the receipt, not another copied upstream artifact.
+artifact's original revision. It records the original and local byte identities
+for the generator and regenerated definition fixture separately.
 
 ## Authority and remaining work
 

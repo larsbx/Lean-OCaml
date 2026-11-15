@@ -48,7 +48,7 @@ wrong versions, failed generation and changed fixture bytes fail the command.
 | [Implementation](reference/conversion.ml) | Scope, substitution, checked heights and metered conversion |
 | [Correspondence contract](docs/kernel-correspondence.md) | Lean mapping, disagreements and unsupported features |
 | [Source provenance](conformance/provenance.json) | Upstream revisions, paths, Git blob identities and SHA-256 hashes |
-| [Definition contract](schemas/definitions-v1.md) | Ordered reference-environment observations and exact rejection causes |
+| [Definition contract](schemas/definitions-v2.md) | Ordered reference-environment observations and exact rejection causes |
 | [Validation guide](docs/validation.md) | Test inventory and interpretation of exact-source evidence |
 | [Architecture](ARCHITECTURE.md) | Estate authority and language boundaries |
 | [Repository identity](docs/remote-access.md) | Accessible project name and publication history |
