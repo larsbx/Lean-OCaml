@@ -16,8 +16,8 @@
   },
   {
     "path": "ARCHITECTURE.md",
-    "bytes": 2107,
-    "sha256": "cd74dee6132a57cdb94681a034fb4d912f3c5a592ffe9e97902c4b4756a8f8d8"
+    "bytes": 2492,
+    "sha256": "9d9115587eb2eacba3697c50f0ca63a94bfe32c932e4f9e7a96fe10fdc3a5535"
   },
   {
     "path": "ESTATE.toml",
@@ -26,8 +26,8 @@
   },
   {
     "path": "LANGUAGE_BOUNDARIES.md",
-    "bytes": 1089,
-    "sha256": "c531639a964587de67a49cd13ccb1499a66152b8af0fb64498fa5d67527aca22"
+    "bytes": 1544,
+    "sha256": "066bf29b8be6e2a677a64ac548bcbfd37d740aaebc9f73c7712f23f2c979342b"
   },
   {
     "path": "Makefile",
@@ -36,8 +36,8 @@
   },
   {
     "path": "README.md",
-    "bytes": 3477,
-    "sha256": "0a518500125143a2a9168278c8ad30eda89a8076b297729244235bd48cda115b"
+    "bytes": 3740,
+    "sha256": "422f06209d7a2e4cd0dec85a4ee69f4f2c8ff98770d9b5380b5d3b20d959ac7a"
   },
   {
     "path": "conformance/adversarial.ml",
@@ -61,18 +61,18 @@
   },
   {
     "path": "conformance/provenance.json",
-    "bytes": 5061,
-    "sha256": "58af68877a108d227b8accfad9e1625ddd258495b4295e4e96880198d70c8363"
+    "bytes": 5199,
+    "sha256": "67c50d8a0742af97d4fd113e0e70b2d21096529665224287a494892b7c5abfbc"
   },
   {
     "path": "conformance/replay.ml",
-    "bytes": 7762,
-    "sha256": "c4dd668c063db8df6d6ec3022ec112db965fdd756c513c9c8ba42d1c393d3482"
+    "bytes": 13145,
+    "sha256": "06aae702f0d992624eaf5266ab01a02cb0f5976a6b658f7ff7f09ccf098a0f15"
   },
   {
     "path": "conformance/run.sh",
-    "bytes": 2661,
-    "sha256": "64fc06eaec7d60e12636bcbb6d7cca9006db195085061b5b24e6207d0d7b6496"
+    "bytes": 2759,
+    "sha256": "ab561ee73b24b234307f004a3d49132eabe9f3310085386d22a3960eb7c7b923"
   },
   {
     "path": "conformance/rust-v1.tsv",
@@ -96,18 +96,23 @@
   },
   {
     "path": "docs/0003-dependent-typing-integration.md",
-    "bytes": 4161,
-    "sha256": "263faa7eeb9790887fc6099901d6c5f0d67ba9dc7de71f21fad86bbdfb04e989"
+    "bytes": 4708,
+    "sha256": "068275a96f8c9349bb6aa88eb055e000b743c90ea45adff57b592b0f33f8c20c"
+  },
+  {
+    "path": "docs/0004-definition-refusal-evidence.md",
+    "bytes": 3920,
+    "sha256": "e7d6289144c8906946355b06ed84182e128a3e7c80cc6b9a06b34bfe68290936"
   },
   {
     "path": "docs/kernel-correspondence.md",
-    "bytes": 8485,
-    "sha256": "6890a89b34fe61770fcd1e903ca4890d09d52b85119d35857d97fa0ce20f2076"
+    "bytes": 9104,
+    "sha256": "6526ebc1396c3faa9387bb00c9c27702a7ac7661ca7c8cea44811ed88363fe5e"
   },
   {
     "path": "docs/remote-access.md",
-    "bytes": 2483,
-    "sha256": "53dd5747e70db911c03caca18fadf3a0b03b25ed1bda07c9676bd7e830b47d6c"
+    "bytes": 2382,
+    "sha256": "18578bfbc4087e81598f5fd952f4a3b0b2daddcc3eb3edc803c11dd0fcd64795"
   },
   {
     "path": "docs/rust-v1-correspondence.md",
@@ -116,8 +121,8 @@
   },
   {
     "path": "docs/validation.md",
-    "bytes": 5920,
-    "sha256": "2ff92d9687b860d02c9d61a2879b8e18a75490388841cd88829cf196b5cb2697"
+    "bytes": 6532,
+    "sha256": "54a0558a455f5865ebd068feafebaf5112d137b57f0f9c8030c3e6bfad96a514"
   },
   {
     "path": "kernel/README.md",
@@ -138,6 +143,11 @@
     "path": "oracles/RustBaseline.lean",
     "bytes": 3829,
     "sha256": "18a0297905ea01ebef399afd55ebce1654b13147e1fefe59406fb2ee13a8bbd9"
+  },
+  {
+    "path": "oracles/ValidateDefinitionRefusals.lean",
+    "bytes": 9814,
+    "sha256": "b6c66808d8439f36120761673e2407aefe990bc2c2b01d58487eae5eb35cc7d5"
   },
   {
     "path": "oracles/ValidateTypingRefusals.lean",
@@ -166,8 +176,8 @@
   },
   {
     "path": "schemas/definitions-v1.md",
-    "bytes": 754,
-    "sha256": "1b5dea79dea94b9d5f64ed22900be815d5ad1df68d27456d8911be95e4600d55"
+    "bytes": 2957,
+    "sha256": "228eeb449837c74b8bfbdb9bccb07e51ac2d2c38b7d4181c1c3c9644715c255b"
   },
   {
     "path": "schemas/typing-v1.md",

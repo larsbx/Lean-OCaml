@@ -14,7 +14,7 @@ standard library; no Dune, Opam package or native compiler is required.
 
 ```sh
 make test                 # Compile and replay all OCaml tests and source hashes
-make test-lean            # Also regenerate Lean fixtures and strictly replay typing
+make test-lean            # Also regenerate Lean fixtures and strictly replay refusals
 make audit                # Fetch and verify the pinned external estate auditor
 make acceptance           # Write exact-source local logs and an unsigned receipt
 ```
@@ -48,6 +48,7 @@ wrong versions, failed generation and changed fixture bytes fail the command.
 | [Implementation](reference/conversion.ml) | Scope, substitution, checked heights and metered conversion |
 | [Correspondence contract](docs/kernel-correspondence.md) | Lean mapping, disagreements and unsupported features |
 | [Source provenance](conformance/provenance.json) | Upstream revisions, paths, Git blob identities and SHA-256 hashes |
+| [Definition contract](schemas/definitions-v1.md) | Ordered reference-environment observations and exact rejection causes |
 | [Validation guide](docs/validation.md) | Test inventory and interpretation of exact-source evidence |
 | [Architecture](ARCHITECTURE.md) | Estate authority and language boundaries |
 | [Repository identity](docs/remote-access.md) | Accessible project name and publication history |
@@ -55,7 +56,9 @@ wrong versions, failed generation and changed fixture bytes fail the command.
 The extended corpus has 144 conversion, 40 typing and 7 environment vectors.
 The dependent-typing cases cover zero to eight intervening binders, with exact
 wrong-binder type-mismatch rejections in both OCaml and the supplementary Lean
-replay. The imported Rust baseline adds 19 rows, including two designated
+replay. The definition corpus separately checks exact rejection causes and
+preservation of prior environment snapshots after failed insertions. The
+imported Rust baseline adds 19 rows, including two designated
 Lean-true / βζ-false cases for function η and proof irrelevance. The local suite also runs
 1,024 deterministic generated cases and adversarial boundary controls; those
 properties are internal checks, not Lean-checked theorems.
