@@ -1,7 +1,8 @@
 # ADR 0003: Integrate dependent typing with the hardened conversion reference
 
-Status: implemented for review. The reference remains non-authoritative;
-no declaration or theorem admission boundary changes.
+Status: merged in PR #2 as `08340ce24bcdbb6c8563152a7ea640406d67887b`.
+The reference remains non-authoritative; no declaration or theorem admission
+boundary changes.
 
 ## Problem and decision
 
@@ -49,16 +50,19 @@ semantic refusals, including exactly `appTypeMismatch` for all nine wrong-binder
 cases. Five injected classifier controls reject timeout, memory, recursion,
 interruption and internal exceptions. Seven OCaml controls separately verify
 that the stricter wrong-binder verdict cannot be replaced by another outcome.
-The four inherited negative definition rows retain the generator's generic
-exception handling and are not presented as precise semantic-refusal evidence.
+At this increment, the four inherited negative definition rows retained the
+generator's generic exception handling and were not presented as precise
+semantic-refusal evidence. [ADR 0004](0004-definition-refusal-evidence.md)
+records the subsequent strict definition replay that closes that evidence gap.
 
 ## Acceptance and provenance
 
 The generator and type corpus are copied byte for byte from the original PR
 revision. Their original source revision and content digests are recorded
-separately from the older unchanged oracle artifacts. `integration_parents`
-records both public source parents, while the receipt's source digest binds
-the complete resulting source tree.
+separately from the older unchanged oracle artifacts. The original manifest's
+`integration_parents` recorded both public source parents; the current manifest
+retains them under `historical_typing_integration.source_parents`. The receipt's
+source digest binds the complete resulting source tree.
 
 Fresh local acceptance compiles OCaml 5.5.1, replays all inherited and added
 checks, regenerates all four fixture files under Lean 4.34.1, executes the
@@ -67,6 +71,10 @@ regression checks ensure Git worktree metadata is excluded from receipts and
 source symlinks remain refused. The new head's hosted workflow provides
 separate execution evidence. Old PR #2 and PR #3 workflow runs are historical
 and must not be attributed to the integrated source.
+
+The post-merge [conformance run 43646432632](https://github.com/larsbx/Lean-OCaml/actions/runs/43646432632)
+subsequently passed at the merge revision. This is hosted evidence for that
+source, separate from its local receipt and from later increments.
 
 Future general universe, inductive, quotient, admission, η and proof-irrelevance
 work remains outside this increment. No full Lean kernel compatibility or

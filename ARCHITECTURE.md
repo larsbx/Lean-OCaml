@@ -21,6 +21,12 @@ annotation and body, and stores the expanded value. Inference expands constants
 under the same work budget used for type inference. This models transparent
 unfolding within the fragment. Names are case-sensitive strings.
 
+The ordered definition corpus requires the designated semantic refusal for each
+failed insertion in both OCaml and the trusted Lean checker. Resource/internal
+errors cannot satisfy those observations. The replay also checks that prior
+snapshots remain usable and refused fresh names are absent. These are bounded
+reference-environment observations, not general declaration admission.
+
 General universe expressions, opaque constants, η, proof irrelevance, inductives,
 recursors, and declaration admission require future correspondence work.
 

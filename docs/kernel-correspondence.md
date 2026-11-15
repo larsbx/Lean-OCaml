@@ -8,7 +8,7 @@ bounded β/ζ conversion. It has no declaration or theorem admission authority.
 in `reference/`. Existing closed-term inference and transparent monomorphic
 reference definitions are separate APIs, not general Lean kernel admission.
 
-The hardened baseline is [Lean-OCaml main cedbaa619434f6ce4ff229ae41c38339116c900f](https://github.com/larsbx/Lean-OCaml/tree/cedbaa619434f6ce4ff229ae41c38339116c900f).
+The integrated baseline is [Lean-OCaml main 08340ce24bcdbb6c8563152a7ea640406d67887b](https://github.com/larsbx/Lean-OCaml/tree/08340ce24bcdbb6c8563152a7ea640406d67887b).
 The cross-language contract is [lean-rust 27ececb284b82b7d43884af317c7fcb89feb3da0](https://github.com/larsbx/lean-rust/blob/27ececb284b82b7d43884af317c7fcb89feb3da0/docs/kernel-correspondence.md).
 Trusted oracle execution pins [Lean 4.34.1 commit 5045d0056413266e57c625dcd7c365b10e377c52](https://github.com/leanprover/lean4/tree/5045d0056413266e57c625dcd7c365b10e377c52).
 The reproducible OCaml compiler target is **5.5.1**.
@@ -122,9 +122,11 @@ four WHNF results and four substitutions. The extended 191-row corpus
 from PR #2 at f180db5a47e185ea3d5390bede2d76a2b80a9024. Both are regenerated
 with pinned Lean and compared byte for byte. A supplementary strict Lean
 replay checks all 40 typing rows and requires the designated semantic errors
-for all 14 refusals. The four inherited negative definition rows still use
-the generator's generic exception handling; they are refusal observations
-without precise semantic-error evidence. The 1,024 generated OCaml cases are
+for all 14 refusals. A separate strict definition checker replays the seven
+ordered environment rows and requires the designated semantic error for all
+four definition refusals. Both validators preserve the imported generator's
+bytes while strengthening its generic negative-result evidence. The
+1,024 generated OCaml cases are
 internal properties and receive no Lean checking. See
 [validation.md](validation.md) for the execution record.
 
@@ -137,3 +139,11 @@ wrong-binder rejections over depths zero through eight. Each wrong-binder
 row must produce OCaml `Type_mismatch` and Lean `appTypeMismatch`; other
 semantic errors and every resource refusal fail that observation. See
 [ADR 0003](0003-dependent-typing-integration.md).
+
+The reference-definition extension distinguishes duplicate names, unavailable
+self-references, declared-type mismatches and invalid type annotations. The
+OCaml and Lean replays check persistence of prior environment snapshots after
+refusal. Those exact fixture mappings and their limited environment scope are
+specified in [definitions-v1](../schemas/definitions-v1.md) and
+[ADR 0004](0004-definition-refusal-evidence.md). Lean's checked oracle insertion
+does not introduce OCaml declaration or theorem admission.
