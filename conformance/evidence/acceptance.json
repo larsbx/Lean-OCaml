@@ -1,15 +1,16 @@
 {
   "schema": "lean-ocaml.local-acceptance.v1",
-  "base_revision": "08340ce24bcdbb6c8563152a7ea640406d67887b",
-  "source_tree_sha256": "1f1079c48541abd4f87ad43ff23b31d2d8f4b9b1beb13fe7d3ad32c4931e3f84",
+  "base_revision": "986874105d0136e7fca4440eb4392eba75cce6f8",
+  "source_tree_sha256": "ab2d9bb8f6799bf02e96e2c4c960fad8c9ea83bbb071e6a68a2dfcfc8812b699",
   "source_manifest": "conformance/evidence/source-manifest.json",
   "evidence_directory_excluded_from_source_digest": "conformance/evidence/",
   "source_digest_encoding": "SHA-256 of sorted file objects with path, bytes, sha256; canonical compact JSON with sorted keys",
-  "ocaml_executable": "/workspace/scratch/bfab66fc21c4/.tooling/ocaml-install/bin/ocamlc",
+  "ocaml_executable": "/workspace/scratch/2726181312d3/toolchains/ocaml-install/bin/ocamlc",
   "ocaml_version": "5.5.1",
-  "lean_executable": "/workspace/scratch/bfab66fc21c4/.tooling/lean/lean-4.34.1-linux/bin/lean",
+  "lean_executable": "/workspace/scratch/44d0098cb628/.tools/lean-4.34.1-linux/bin/lean",
   "lean_version": "Lean (version 4.34.1, x86_64-unknown-linux-gnu, commit 5045d0056413266e57c625dcd7c365b10e377c52, Release)",
   "lean_regeneration_requested": true,
+  "benchmark_requested": true,
   "hosted_acceptance_included": false,
   "authority": "unsigned_local_test_observations_only",
   "checks": [
@@ -19,28 +20,44 @@
         "conformance/run.sh",
         "--lean"
       ],
-      "started_at_utc": "2026-11-15T00:09:46.104159+00:00",
-      "finished_at_utc": "2026-11-15T00:10:39.712297+00:00",
+      "started_at_utc": "2026-11-17T15:46:13.001037+00:00",
+      "finished_at_utc": "2026-11-17T15:46:23.341930+00:00",
       "status": "passed",
       "exit_code": 0,
       "log": "conformance/evidence/conformance.log",
-      "log_sha256": "6f6684c3da911ef7bd5102e25853e4ff0af8cba33b42db2561eecb9caecd40b0"
+      "log_sha256": "00127ac20bdb05ace552457e4b7b948a38e66330f7e27c248505efbc9d67046a"
     },
     {
       "command": [
         "sh",
         "tools/estate-audit.sh",
-        "/workspace/scratch/bfab66fc21c4/.tooling/audit_estate_layout.py"
+        "/workspace/scratch/2726181312d3/toolchains/audit_estate_layout.py"
       ],
-      "started_at_utc": "2026-11-15T00:10:39.713119+00:00",
-      "finished_at_utc": "2026-11-15T00:10:39.825999+00:00",
+      "started_at_utc": "2026-11-17T15:46:23.347400+00:00",
+      "finished_at_utc": "2026-11-17T15:46:23.607002+00:00",
       "status": "passed",
       "exit_code": 0,
       "log": "conformance/evidence/estate-audit.log",
-      "log_sha256": "6972b2921d099a3adf59b4014035f0fa95618ad4632961c2e0ff6ac874a5bdab"
+      "log_sha256": "a6e9a068d89ea8c189e3ee6cc7d075f68ada43b5d44b210197c6ea4e5e0c14c4"
+    },
+    {
+      "command": [
+        "sh",
+        "tools/benchmark.sh",
+        "--scale",
+        "4",
+        "--repetitions",
+        "5"
+      ],
+      "started_at_utc": "2026-11-17T15:46:23.607243+00:00",
+      "finished_at_utc": "2026-11-17T15:46:42.035871+00:00",
+      "status": "passed",
+      "exit_code": 0,
+      "log": "conformance/evidence/benchmark.log",
+      "log_sha256": "3348aa617e49e0f6c31e05b7e5d41798e844b809cdfcf04d1f827a68240025ce"
     }
   ],
   "source_unchanged_during_acceptance": true,
   "status": "passed",
-  "completed_at_utc": "2026-11-15T00:10:39.839179+00:00"
+  "completed_at_utc": "2026-11-17T15:46:42.043732+00:00"
 }

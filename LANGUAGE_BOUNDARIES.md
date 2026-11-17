@@ -12,6 +12,13 @@ or a fixture parser. The conformance executable links the reference and reads
 the versioned TSV contract. Generated TSV is derived from the Lean generator
 using the repository's pinned Lean toolchain and is regenerated in CI.
 
+Bounded concurrency stays in the OCaml reference plane. Workers call the existing
+definition checker; only already checked, closed sibling values can be merged.
+No worker verdict, successful batch or benchmark grants theorem-admission
+authority. Generated dependency-graph controls are internal OCaml evidence;
+the existing Lean fixtures are retained and regenerated separately. The bundled
+Unix library is used only by tests and benchmark timing, not reference checking.
+
 The supplementary typing and definition checkers replay the unchanged imported
 fixtures with exact semantic-error requirements. Their resource/internal
 exception controls are injected classifier tests, not attempts to exhaust

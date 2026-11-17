@@ -1,0 +1,14 @@
+# OCaml 5.5.1; bytecode; runtime recommended domains=9
+# Means per batch; checked_jobs counts all timed repetitions.
+# Full major collection, fixture construction and result comparison are outside timing.
+# Domain startup/join and dependency planning are included. Speedup is observational.
+workload	workers	definitions	repetitions	checked_jobs	waves	wall_s	cpu_s	speedup	cpu_per_wall
+wide	1	128	5	640	1	0.667242	0.663764	1.000	0.995
+wide	2	128	5	640	1	0.360458	0.663515	1.851	1.841
+wide	4	128	5	640	1	0.204106	0.657705	3.269	3.222
+wide	8	128	5	640	1	0.134682	0.671791	4.954	4.988
+chain	1	128	5	640	128	0.323373	0.320944	1.000	0.992
+chain	2	128	5	640	128	0.327142	0.327049	0.988	1.000
+chain	4	128	5	640	128	0.304424	0.304390	1.062	1.000
+chain	8	128	5	640	128	0.305334	0.305025	1.059	0.999
+# Every timed environment and wave sequence matched the one-worker reference.

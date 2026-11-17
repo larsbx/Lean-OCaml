@@ -12,6 +12,9 @@
 | OCaml adversarial | 75 named controls | Scope, capture, cyclic values, sharing, negative integers, overflow, erased invalid children, divergence and intermediate height. |
 | Explicit disagreements | 2 controls | η and proof irrelevance remain outside conversion. |
 | Generated properties | 1,024 cases and 10,240 assertions | Internal scoped-syntax properties; not Lean-checked and not necessarily well typed. |
+| Reference batch concurrency | 53 controls, 32 generated DAGs, 3,309 assertions | Same waves, immutable environment observations and exact errors at 1/2/4/8 workers; real overlapping domain execution. |
+| Domain startup failure | 9 assertions in a separate executable | Injected second-spawn failure joins the active worker, runs its exit hook and leaves the pool reusable. |
+| Optional concurrency benchmark | Wide and chained workloads at 1/2/4/8 workers | Every result and wave sequence matches the sequential reference; wall/CPU times are observations, with no speed threshold. |
 | Fresh Lean regeneration | Four fixture files from two generators | Pinned trusted execution must reproduce exact fixture bytes. |
 | Strict Lean typing replay | All 40 typing rows: 26 accepted and 14 exact semantic refusals; 5 injected classifier controls | Nine wrong-binder cases require `appTypeMismatch`; time, memory, recursion, interruption and internal failures cannot count as typing evidence. |
 | Strict Lean definition replay | All 7 environment rows: 2 accepted definitions, 4 exact semantic refusals and 1 final inference; 5 injected classifier controls | Checked insertion, designated exceptions, retained earlier bindings and absence of refused fresh names. |
@@ -46,6 +49,7 @@ sh conformance/run.sh
 sh conformance/run.sh --lean
 sh tools/estate-audit.sh /absolute/path/to/audit_estate_layout.py
 python3 tools/acceptance.py --lean --audit /absolute/path/to/audit_estate_layout.py
+python3 tools/acceptance.py --lean --benchmark --audit /absolute/path/to/audit_estate_layout.py
 ```
 
 `OCAMLC` and `LEAN` can supply absolute executable paths. The runner makes the
@@ -55,6 +59,12 @@ local auditor argument, the wrapper fetches the pinned canonical auditor and
 checks its digest before execution. The publication-session toolchains were
 restored from the pinned compiler source and the exact Lean release; the
 receipt records the versions actually executed.
+
+The optional benchmark runs five repetitions of each 128-definition workload
+at every worker count. Its log hash, command and timestamps are included in the
+same receipt when requested. Results concern the synthetic bytecode reference
+workloads, not a speedup of upstream Lean. See the
+[concurrency guide](reference-concurrency.md) for timing boundaries.
 
 ## Boundaries
 
@@ -82,9 +92,10 @@ and require their precise rejection causes. The definition checker uses
 normal checked Lean insertion; it adds no OCaml admission authority. See
 [definitions-v1](../schemas/definitions-v1.md) for the exact four-case mapping.
 
-This increment starts from main `08340ce24bcdbb6c8563152a7ea640406d67887b`
-and replaces the earlier receipt with a fresh run over the changed evidence
-code and documentation. The fixture inventory remains 210 unique rows:
+The concurrency increment starts from main
+`986874105d0136e7fca4440eb4392eba75cce6f8` and replaces the earlier receipt with
+a fresh run over the changed source and documentation. The fixture inventory
+remains 210 unique rows:
 191 extended OCaml rows plus the 19-row Rust baseline, including its two
 declared disagreements. Supplementary replays do not increase that fixture
 count. The receipt's baseline revision is the local checkout parent;

@@ -1,7 +1,7 @@
 {
   "schema": "lean-ocaml.source-provenance.v1",
   "base_repository": "larsbx/Lean-OCaml",
-  "base_revision": "08340ce24bcdbb6c8563152a7ea640406d67887b",
+  "base_revision": "986874105d0136e7fca4440eb4392eba75cce6f8",
   "lean_release": "4.34.1",
   "lean_commit": "5045d0056413266e57c625dcd7c365b10e377c52",
   "ocaml_version": "5.5.1",
@@ -92,7 +92,8 @@
     "The extended OCaml corpus contains 144 conversion, 40 typing and 7 environment rows (191 total).",
     "The 27 dependent-binder rows and the generator are byte-identical imports from PR #2 revision f180db5a47e185ea3d5390bede2d76a2b80a9024.",
     "The supplementary typing and definition validators are original repository source, covered by the acceptance source manifest, and supply exact semantic-error checking without changing imported bytes.",
-    "Fixture and hash agreement are finite evidence, not proof of full Lean kernel compatibility."
+    "Fixture and hash agreement are finite evidence, not proof of full Lean kernel compatibility.",
+    "The bounded concurrency modules, generated dependency-graph controls and benchmark are original repository source covered by the acceptance source manifest; they add no imported Lean fixture rows or theorem-admission authority."
   ],
   "historical_typing_integration": {
     "merged_revision": "08340ce24bcdbb6c8563152a7ea640406d67887b",
