@@ -21,6 +21,17 @@ annotation and body, and stores the expanded value. Inference expands constants
 under the same work budget used for type inference. This models transparent
 unfolding within the fragment. Names are case-sensitive strings.
 
+The reference batch API derives dependencies from all constant occurrences and
+checks ready definitions concurrently against one immutable snapshot per wave.
+Its worker count and job inventory are bounded. A private checked-branch merge
+accepts exactly one addition over the identical parent snapshot and distinct
+names. This relies on stored values being closed and fully expanded. Any failed
+wave returns no environment and prevents later waves from running. One-worker
+execution uses the same waves and budgets as parallel execution; it is the
+sequential reference for this new contract. See the
+[batch schema](schemas/definition-batch-v1.md) and
+[concurrency guide](docs/reference-concurrency.md).
+
 The ordered definition corpus requires the designated semantic refusal for each
 failed insertion in both OCaml and the trusted Lean checker. Resource/internal
 errors cannot satisfy those observations. The replay also checks that prior

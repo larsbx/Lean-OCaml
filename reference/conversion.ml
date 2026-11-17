@@ -326,3 +326,35 @@ let define ~fuel env ~name ~ty ~value =
     let expected = normal tick 1 ty in
     guard (equal tick actual expected) Type_mismatch;
     (name, value) :: env)
+
+type merge_error = Invalid_branch | Duplicate_branch | Merge_limit_exceeded
+
+exception Merge_refusal of merge_error
+
+module Definition_names = Set.Make (String)
+
+let merge_checked_branches ~fuel ~base branches =
+  let remaining = ref fuel in
+  let tick () =
+    if !remaining <= 0 then raise (Merge_refusal Merge_limit_exceeded);
+    decr remaining
+  in
+  let rec collect names heads = function
+    | [] ->
+        (* Match a left-to-right insertion fold, without repeating type checks.
+           The checked values contain no name references to reinterpret. *)
+        List.fold_left (fun env binding -> tick (); binding :: env)
+          base (List.rev heads)
+    | branch :: rest ->
+        tick ();
+        (match branch with
+        | ((name, _) as binding) :: parent when parent == base ->
+            if Definition_names.mem name names then
+              raise (Merge_refusal Duplicate_branch);
+            collect (Definition_names.add name names) (binding :: heads) rest
+        | _ -> raise (Merge_refusal Invalid_branch))
+  in
+  try
+    tick ();
+    Ok (collect Definition_names.empty [] branches)
+  with Merge_refusal error -> Error error

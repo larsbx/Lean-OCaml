@@ -63,3 +63,15 @@ val define :
   fuel:int -> environment -> name:string -> ty:expr -> value:expr ->
   (environment, error) result
 val infer_in : fuel:int -> environment -> expr -> (expr, error) result
+
+(** Merge observations made by independent checks, without exposing an unchecked
+    environment constructor. Each branch must contain exactly one successful
+    [define] over the physically identical [base] snapshot. Names must be
+    distinct. Stored values are already checked, closed, and constant-free.
+    Input order is the order of insertion (the last input becomes the first
+    lookup entry). No input snapshot is modified. *)
+type merge_error = Invalid_branch | Duplicate_branch | Merge_limit_exceeded
+
+val merge_checked_branches :
+  fuel:int -> base:environment -> environment list ->
+  (environment, merge_error) result

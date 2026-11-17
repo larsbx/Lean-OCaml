@@ -68,6 +68,8 @@ def run(command: list[str], logfile: Path) -> dict[str, object]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--lean", action="store_true", help="regenerate both pinned Lean corpora")
+    parser.add_argument("--benchmark", action="store_true",
+                        help="record reproducible concurrency measurements; no speed threshold")
     parser.add_argument("--audit", type=Path, help="external pinned estate auditor (offline)")
     args = parser.parse_args()
     EVIDENCE.mkdir(parents=True, exist_ok=True)
@@ -94,6 +96,7 @@ def main() -> int:
         "lean_executable": lean,
         "lean_version": command_output([lean, "--version"]),
         "lean_regeneration_requested": args.lean,
+        "benchmark_requested": args.benchmark,
         "hosted_acceptance_included": False,
         "authority": "unsigned_local_test_observations_only",
         "checks": [],
@@ -107,6 +110,9 @@ def main() -> int:
     if args.audit:
         audit.append(str(args.audit.resolve()))
     checks.append(run(audit, EVIDENCE / "estate-audit.log"))
+    if args.benchmark:
+        checks.append(run(["sh", "tools/benchmark.sh", "--scale", "4", "--repetitions", "5"],
+                          EVIDENCE / "benchmark.log"))
     after_files, after_digest = source_snapshot()
     receipt["source_unchanged_during_acceptance"] = after_files == files and after_digest == source_digest
     receipt["status"] = ("passed" if all(c["status"] == "passed" for c in checks)

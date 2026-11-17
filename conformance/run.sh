@@ -39,18 +39,31 @@ python3 tools/check_provenance.py
 build=$(mktemp -d)
 trap 'rm -rf "$build"' EXIT
 cp reference/conversion.ml reference/conversion.mli conformance/replay.ml \
-  conformance/rust_replay.ml conformance/adversarial.ml "$build/"
+  reference/bounded_parallel.ml reference/bounded_parallel.mli \
+  reference/definition_batch.ml reference/definition_batch.mli \
+  conformance/rust_replay.ml conformance/adversarial.ml conformance/batch.ml \
+  conformance/pool_start_failure.ml "$build/"
 (
   cd "$build"
   "$ocaml_compiler" -c conversion.mli
   "$ocaml_compiler" -c conversion.ml
+  "$ocaml_compiler" -c bounded_parallel.mli
+  "$ocaml_compiler" -c bounded_parallel.ml
+  "$ocaml_compiler" -c definition_batch.mli
+  "$ocaml_compiler" -c definition_batch.ml
   "$ocaml_compiler" -o replay conversion.cmo replay.ml
   "$ocaml_compiler" -o rust_replay conversion.cmo rust_replay.ml
   "$ocaml_compiler" -o adversarial conversion.cmo adversarial.ml
+  "$ocaml_compiler" -I +unix -o batch unix.cma conversion.cmo bounded_parallel.cmo \
+    definition_batch.cmo batch.ml
+  "$ocaml_compiler" -I +unix -o pool_start_failure unix.cma bounded_parallel.cmo \
+    pool_start_failure.ml
 )
 "$build/replay" conformance/generated.tsv
 "$build/rust_replay" conformance/rust-v1.tsv
 "$build/adversarial"
+"$build/batch"
+"$build/pool_start_failure"
 if "$regenerate"; then
   "$lean_executable" --run oracles/Generate.lean "$build/generated.tsv"
   diff -u conformance/generated.tsv "$build/generated.tsv"

@@ -3,7 +3,9 @@
 Candidate OCaml reference for scoped Lean expression syntax, capture-avoiding
 substitution, and bounded β/ζ conversion. The existing separate closed-term
 typing reference and transparent monomorphic-definition environment remain
-available. This project does not admit Lean declarations or certify theorems.
+available. Independent transparent-definition checks can run in bounded OCaml
+domain groups with deterministic dependency waves and transactional results.
+This project does not admit Lean declarations or certify theorems.
 
 ## Build and check
 
@@ -17,6 +19,8 @@ make test                 # Compile and replay all OCaml tests and source hashes
 make test-lean            # Also regenerate Lean fixtures and strictly replay refusals
 make audit                # Fetch and verify the pinned external estate auditor
 make acceptance           # Write exact-source local logs and an unsigned receipt
+make benchmark            # Compare 1/2/4/8 workers on wide and chained workloads
+make acceptance-benchmark # Include five-repeat performance observations in receipt
 ```
 
 The build runs in a temporary directory and removes it after execution. It
@@ -49,6 +53,8 @@ wrong versions, failed generation and changed fixture bytes fail the command.
 | [Correspondence contract](docs/kernel-correspondence.md) | Lean mapping, disagreements and unsupported features |
 | [Source provenance](conformance/provenance.json) | Upstream revisions, paths, Git blob identities and SHA-256 hashes |
 | [Definition contract](schemas/definitions-v1.md) | Ordered reference-environment observations and exact rejection causes |
+| [Batch contract](schemas/definition-batch-v1.md) | Dependencies, resource limits, checked merging and failure behavior |
+| [Concurrency guide](docs/reference-concurrency.md) | API example, validation and reproducible measurements |
 | [Validation guide](docs/validation.md) | Test inventory and interpretation of exact-source evidence |
 | [Architecture](ARCHITECTURE.md) | Estate authority and language boundaries |
 | [Repository identity](docs/remote-access.md) | Accessible project name and publication history |
@@ -61,7 +67,10 @@ preservation of prior environment snapshots after failed insertions. The
 imported Rust baseline adds 19 rows, including two designated
 Lean-true / βζ-false cases for function η and proof irrelevance. The local suite also runs
 1,024 deterministic generated cases and adversarial boundary controls; those
-properties are internal checks, not Lean-checked theorems.
+properties are internal checks, not Lean-checked theorems. The concurrency suite
+adds 53 controls, 32 generated dependency graphs and 3,309 assertions, plus nine
+injected domain-start failure cleanup assertions. It checks agreement across
+worker counts and actual overlapping execution; timings are recorded separately.
 
 The committed [local receipt](conformance/evidence/acceptance.json), source
 manifest and logs identify the exact bytes tested. Hosted CI is separate
