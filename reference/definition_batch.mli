@@ -28,7 +28,7 @@ type report = {
     Acyclic forward references are allowed by this batch contract. References
     outside the batch are resolved by [Conversion.define] against the base.
 
-    Planning inspects at most [scan_fuel] expression nodes per definition and
+    Planning charges at most [scan_fuel] expanded expression nodes per definition and
     enforces [Conversion.max_height]. Cycles are refused before checking; the
     reported residual includes declarations transitively blocked by a cycle.
     Ready definitions in each wave retain input order and share one snapshot.
@@ -42,7 +42,11 @@ type report = {
     One-worker execution uses these same waves and snapshots. Its outcomes,
     including budget refusals, are the sequential reference for this API;
     an arbitrary ordered fold of [Conversion.define] has different lookup costs.
-    Worker groups are created and joined per wave, not retained between waves.
+    Identical physical type/value pairs in one wave may share successful
+    checking work; every name and budget remains independently checked.
+    Constant-free annotation evidence may cross joined waves inside this call.
+    No checking cache survives a later [run] call. Worker groups are created
+    and joined per wave, not retained between waves.
     All input data must remain immutable during execution. *)
 val run :
   workers:int -> scan_fuel:int -> merge_fuel:int -> Conversion.environment ->
