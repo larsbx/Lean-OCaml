@@ -103,6 +103,12 @@ when waves are small.
 
 ## Next obligations
 
+The [direct bytecode comparison](bytecode-optimization.md) adds an actual Lean
+kernel baseline and distinct, unshared and dependent workloads. Scoped successful
+checking caches and retained constant types reduce repeated work while preserving
+the old logical fuel accounting. Its complete results bound the scope of any
+performance claim; extra workers cannot create parallel checking in a chain.
+
 Measure representative exported proof/reference workloads before changing pool
 lifetime, adding shared caches or parallelizing individual reductions. A persistent
 pool should justify its extra lifecycle complexity with measured startup costs.

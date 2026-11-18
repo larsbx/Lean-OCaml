@@ -64,6 +64,7 @@ cp reference/conversion.ml reference/conversion.mli conformance/replay.ml \
 "$build/adversarial"
 "$build/batch"
 "$build/pool_start_failure"
+OCAMLC="$ocaml_compiler" sh tools/test_optimization.sh
 if "$regenerate"; then
   "$lean_executable" --run oracles/Generate.lean "$build/generated.tsv"
   diff -u conformance/generated.tsv "$build/generated.tsv"

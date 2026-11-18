@@ -5,6 +5,13 @@ Definition checks passed: 55 outcome-classification, 8 corpus-integrity and 27 s
 adversarial: 75 controls passed; known-disagreement: 2 controls passed; generated: 1024 deterministic cases / 10240 property assertions passed
 Reference batch conformance passed: 53 named controls, 32 generated DAGs, 3309 assertions
 Injected pool startup failure passed: 9 cleanup assertions
+old_conversion.ml: OK
+old_conversion.mli: OK
+old_definition_batch.ml: OK
+old_definition_batch.mli: OK
+old_bounded_parallel.ml: OK
+old_bounded_parallel.mli: OK
+Optimization differential passed: 117 controls, 61314 exact-result assertions against pinned pre-optimization code
 Strict Lean typing replay passed: 40 rows (26 accepted, 14 semantic refusals; 9 appTypeMismatch wrong-binder cases), 5 classifier controls
 Strict Lean definition replay passed: 7 rows (2 definitions accepted, 4 exact semantic refusals, 1 inference), 4 environment-retention checks, initial corpus bindings absent, 5 classifier controls
 Pinned Lean regeneration passed: all four fixture files match byte for byte

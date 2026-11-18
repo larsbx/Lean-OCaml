@@ -1,4 +1,4 @@
-.PHONY: test test-lean audit acceptance benchmark acceptance-benchmark
+.PHONY: test test-lean audit acceptance benchmark benchmark-lean acceptance-benchmark
 
 test:
 	sh conformance/run.sh
@@ -14,6 +14,9 @@ acceptance:
 
 benchmark:
 	sh tools/benchmark.sh $(BENCHMARK_ARGS)
+
+benchmark-lean:
+	python3 tools/compare_lean.py $(COMPARE_LEAN_ARGS)
 
 acceptance-benchmark:
 	python3 tools/acceptance.py --lean --benchmark $(if $(ESTATE_AUDITOR),--audit "$(ESTATE_AUDITOR)")

@@ -64,6 +64,14 @@ Active evaluator-context depth is also bounded. Traversal, substitution,
 normalization, comparison and result export share an operation budget.
 Work units are not comparable with Rust fuel or a count of β/ζ contractions.
 
+Fuel preserves the pre-optimization checker's logical work accounting. A
+successful cached computation records and replays its original charge. If that
+charge cannot fit, the original traversal runs so the refusal reached at the
+given budget is preserved. Failures do not establish reusable success. Name
+lookup uses an immutable index but spends the old list-position charge, including
+the final empty-list step when a name is absent. Faster execution does not allow
+additional results at a lower logical budget.
+
 | Outcome | Meaning |
 | --- | --- |
 | `Ok true` | Validated operands produced structurally equal β/ζ normal forms; no well-typedness claim. |

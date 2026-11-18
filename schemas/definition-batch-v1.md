@@ -12,15 +12,22 @@ Names are nonempty, case-sensitive strings and must be unique within the batch.
 The input list and expressions must remain immutable during execution.
 
 There are at most 4,096 definitions and 1–64 workers. The calling domain is one
-worker; a wave starts at most `min(workers, wave_size) - 1` additional domains.
+worker; a wave starts at most `min(workers, checking_groups) - 1` additional domains.
+Definitions with physically identical type/value expressions may share a checking
+group against the same snapshot. Each name and individual budget is still checked.
+The bounded direct-mapped group index may lose reuse on a hash collision, without
+changing results. Singleton waves and single groups execute directly.
 Each group is joined before the next wave starts. Domains are not retained
 between waves. A one-job wave creates no additional domain.
 
 The definition-list traversal is bounded before converting it to an array, so
-a cyclic list cannot hang planning. Each expression scan visits both the type
+a cyclic list cannot hang planning. Each expression scan accounts for both the type
 and value under one `scan_fuel` budget and enforces the existing height limit
 of 128. It visits every child, including annotations and subexpressions that
-reduction would erase. Scanning collects actual `Const` occurrences; callers
+reduction would erase. Successful subtree summaries may be reused, spending the
+same expanded-node count as the original traversal. Insufficient remaining fuel
+or height triggers normal traversal to preserve refusal order. The bounded
+direct-mapped cache discards reuse on collisions. Scanning collects actual `Const` occurrences; callers
 cannot supply a dependency list that omits a reference.
 
 ## Dependency waves and the sequential reference
@@ -47,6 +54,14 @@ finish, successful branches are merged in input order, and the next wave uses
 that result. Each job has a private checking budget. Each wave has a fresh
 `merge_fuel` budget, independent of the number of workers.
 
+Completed checking judgments may be reused only within a checker bound to one
+parent snapshot. Name validation and duplicate lookup always run separately.
+Constant-free annotation evidence may cross waves inside a batch after the
+previous workers join. Eligibility includes the original syntax's erased
+children; a constant reference makes the annotation ineligible. Each cache has
+exclusive ownership while checking, and no cache survives a later `run` call.
+Cached successful work spends its original logical fuel at the original stages.
+
 `workers = 1` uses this identical plan, snapshots and merge order. This is the
 sequential reference for comparing success and exact refusal results. An
 arbitrary fold of `Conversion.define` over successively extended environments
@@ -70,6 +85,10 @@ Insertion order is the input order: the last branch becomes the first lookup
 entry. The merge charges one unit at entry, one per inspected branch and one
 per inserted binding. Insufficient budget is `Merge_limit_exceeded`; an empty
 merge with positive fuel returns the base. No input snapshot is mutated.
+
+Every successful nonempty merge constructs fresh entries. A singleton merge
+does not return the checked branch unchanged, preserving exact parent-tail
+identity in subsequent merge checks. Its immutable name index may be reused.
 
 ## Outcomes
 

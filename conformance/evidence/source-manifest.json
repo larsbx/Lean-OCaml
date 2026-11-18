@@ -1,8 +1,8 @@
 [
   {
     "path": ".github/workflows/conformance.yml",
-    "bytes": 1935,
-    "sha256": "9aef9bf5256d195f0ae585478eb35b20181fa5f1498c1f821f5d358f770534f1"
+    "bytes": 1960,
+    "sha256": "c135355efc5e6e67095c83e27d4fc05b4c1113197ecd58ebaa3f56d4748d39a9"
   },
   {
     "path": ".gitignore",
@@ -31,13 +31,13 @@
   },
   {
     "path": "Makefile",
-    "bytes": 498,
-    "sha256": "2782e5b7771f5c6fc0cf408b96ff50e0c1d1590b58458b8b83f4a78a85fc6584"
+    "bytes": 582,
+    "sha256": "92479688378c583beea6739bd53715500a496200a122372518216cde2eb341b9"
   },
   {
     "path": "README.md",
-    "bytes": 4545,
-    "sha256": "eda67010460fe96357dd9e5800f160c57b731ee3286d4eff1e9dc06bb8a94ae7"
+    "bytes": 5073,
+    "sha256": "15e14da962c768e0e0a1cfa429030f72bab2b51baef11c5df4636255120c7cf0"
   },
   {
     "path": "conformance/adversarial.ml",
@@ -55,6 +55,16 @@
     "sha256": "60940fd8e33a730a1b00898f223cb933779fe8df4a6ab7b208f5b8fd2d393fe0"
   },
   {
+    "path": "conformance/benchmark_clock.c",
+    "bytes": 602,
+    "sha256": "30ed968b2206a2e2027a6a6111d35ea2b28636bb8a0e7190f91756d84033d0b0"
+  },
+  {
+    "path": "conformance/benchmark_compare.ml",
+    "bytes": 4951,
+    "sha256": "0054b289cd7128a78756585b73fc4cf18b952515a27602bd5cf94d6fe949c6ca"
+  },
+  {
     "path": "conformance/generated.tsv",
     "bytes": 19872,
     "sha256": "4d1871dc8517ec3dd599773663ade41939c9ea6051d74842864de79689797ce9"
@@ -68,6 +78,11 @@
     "path": "conformance/generated.tsv.types",
     "bytes": 3198,
     "sha256": "521823fbfc1830e17ab6b72f6f99c690bcd64918611e38a1d845d561403f20da"
+  },
+  {
+    "path": "conformance/optimization.ml",
+    "bytes": 29459,
+    "sha256": "72b3d1a59b88dd8b10e7ed63ead7b7cc1135b790ae7075dba4c4f89edb277e3f"
   },
   {
     "path": "conformance/pool_start_failure.ml",
@@ -86,8 +101,8 @@
   },
   {
     "path": "conformance/run.sh",
-    "bytes": 3393,
-    "sha256": "f9684a6ef154ee6eb8ab8fe11f1c33894ee6d20f98430dcc5f5e8f0eab2fb736"
+    "bytes": 3448,
+    "sha256": "e38f332496b38b0f0394fb76a858abee8a59db23c3509df709f0c8fb11f4abd1"
   },
   {
     "path": "conformance/rust-v1.tsv",
@@ -120,14 +135,19 @@
     "sha256": "e7d6289144c8906946355b06ed84182e128a3e7c80cc6b9a06b34bfe68290936"
   },
   {
+    "path": "docs/bytecode-optimization.md",
+    "bytes": 13539,
+    "sha256": "46a1acd1092adf1dfbdeca62b653a8505b3244a8b16257e3ac4a01e41b20be29"
+  },
+  {
     "path": "docs/kernel-correspondence.md",
-    "bytes": 9104,
-    "sha256": "6526ebc1396c3faa9387bb00c9c27702a7ac7661ca7c8cea44811ed88363fe5e"
+    "bytes": 9619,
+    "sha256": "18568cb46a7913c0eb52a7ebdcc9b047dd526a29bf3fda9d3697514e12f1b54b"
   },
   {
     "path": "docs/reference-concurrency.md",
-    "bytes": 5657,
-    "sha256": "cc2acb9961870e7fa0786f55c052733bd8fb5096ed1df7635506f0ecb27cff7e"
+    "bytes": 6055,
+    "sha256": "1699cc8fd037c8fa8031b0f002b478a5f48e3717b846b21f1dc33bb97e5bbbb3"
   },
   {
     "path": "docs/remote-access.md",
@@ -141,8 +161,8 @@
   },
   {
     "path": "docs/validation.md",
-    "bytes": 7573,
-    "sha256": "2c1d4ba6f49394f9e04578ccd5471e2244e496d705febae51255ae995490de3a"
+    "bytes": 8574,
+    "sha256": "ef2d557a34c617e93531ccf1a8a15b880c341adbd8e9015c3c3364dbc2483a54"
   },
   {
     "path": "kernel/README.md",
@@ -153,6 +173,11 @@
     "path": "lean-toolchain",
     "bytes": 25,
     "sha256": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b"
+  },
+  {
+    "path": "oracles/BenchmarkKernel.lean",
+    "bytes": 8679,
+    "sha256": "210d80dfdeb2b76c241baaac725b69b3b705fe261d2dce3b2b885db0856b8945"
   },
   {
     "path": "oracles/Generate.lean",
@@ -191,23 +216,23 @@
   },
   {
     "path": "reference/conversion.ml",
-    "bytes": 11889,
-    "sha256": "b61132c18c0b8db34e8623547632249e2bed257a53f1b6e5385b076f2aaad956"
+    "bytes": 22288,
+    "sha256": "db3798a25865d5b04cb73bff33c189df22b9e3633107d556bdef8fc28dbde179"
   },
   {
     "path": "reference/conversion.mli",
-    "bytes": 3855,
-    "sha256": "34a3664e669fd3323583640fb2ea58b529a76e3dc820c08e116330322d00acec"
+    "bytes": 4670,
+    "sha256": "5d371d8f0cb5dce9eb7b6a311afde05609941dd6a89b2f21d9c069dfaff65bd5"
   },
   {
     "path": "reference/definition_batch.ml",
-    "bytes": 5273,
-    "sha256": "5f0cb96226bd0878cd6347e681e3affdf2e1991ef092c9b7379f031ba82aea41"
+    "bytes": 11268,
+    "sha256": "ec89f4d78d0411912893dcf8c906159c3e8350caa32849225bc3cfab268b8b42"
   },
   {
     "path": "reference/definition_batch.mli",
-    "bytes": 2187,
-    "sha256": "6465b2f6c6de50bd3471af2d1cb9e8227d0e3b92334dd66a45063d789ff34224"
+    "bytes": 2470,
+    "sha256": "6059001a2a707ad3ecb5018da2f45104be59bffed3a4da3d93230a164ce8ac93"
   },
   {
     "path": "schemas/beta-zeta-v1.md",
@@ -216,8 +241,8 @@
   },
   {
     "path": "schemas/definition-batch-v1.md",
-    "bytes": 5578,
-    "sha256": "4fc379caee0e5dcfa651ff5ba43776f98485b0d5481760dcdf5ac8f801c35508"
+    "bytes": 6939,
+    "sha256": "155a5f368d66cf76a2b7921ca26b4cd8aeb38c90ef0338748f3c7e457d91a90f"
   },
   {
     "path": "schemas/definitions-v1.md",
@@ -245,13 +270,28 @@
     "sha256": "8c7a7d022642df549468ab7fa3b86ebcd5c9b80f36a210b8ed925faa16e593a9"
   },
   {
+    "path": "tools/compare_lean.py",
+    "bytes": 14011,
+    "sha256": "4da327cea417a1e35a02adf9134c93b17e234f657bef33251ded0b495114d4f8"
+  },
+  {
     "path": "tools/estate-audit.sh",
     "bytes": 776,
     "sha256": "3d5dd7324086ac821feb31800f7cea8833ff206d149e8cff7313f10ab58be1e6"
   },
   {
+    "path": "tools/optimization_workloads.py",
+    "bytes": 12045,
+    "sha256": "ce4b1a2407e42354ddebcdb23f9ce4489719e521b9d82d75292b779afc4969a3"
+  },
+  {
     "path": "tools/test_acceptance.py",
     "bytes": 2195,
     "sha256": "3a06e772561a84552b28bc7d548fb033a97712c1e8f9c89250edce78db1bf7d8"
+  },
+  {
+    "path": "tools/test_optimization.sh",
+    "bytes": 2349,
+    "sha256": "404e13ed6a19a49822cd68c99afddec90a7747e9b739a0a1f35bab044d39280e"
   }
 ]

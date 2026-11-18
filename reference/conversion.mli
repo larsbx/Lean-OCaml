@@ -64,6 +64,21 @@ val define :
   (environment, error) result
 val infer_in : fuel:int -> environment -> expr -> (expr, error) result
 
+(** Domain-local evidence for successful, constant-free annotations. A cache
+    may move between successive parent snapshots only after prior jobs join;
+    it must never be used concurrently. *)
+type checking_cache
+val create_checking_cache : unit -> checking_cache
+
+(** A checker bound to one immutable parent snapshot. Repeated physical
+    type/value pairs reuse only successful completed work, charging the exact
+    original logical fuel. Name validation and duplicate lookup always run.
+    All input syntax must remain immutable. This checker and its optional cache
+    must have exclusive use by one domain. Returned environments are immutable. *)
+val make_definition_checker :
+  ?cache:checking_cache -> environment ->
+  (fuel:int -> name:string -> ty:expr -> value:expr -> (environment, error) result)
+
 (** Merge observations made by independent checks, without exposing an unchecked
     environment constructor. Each branch must contain exactly one successful
     [define] over the physically identical [base] snapshot. Names must be
