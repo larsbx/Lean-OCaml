@@ -17,8 +17,67 @@ published with this increment are freshly generated from the current source.
 ## Results
 
 <!-- measured-results-start -->
-Fresh seven-sample measurements are pending. This section will be populated
-from the final measurement receipt before merge.
+Fresh measurements on November 18, 2026 used checker and driver revision
+`b0eae1076f4d87a09782ecf52426dbac062d502f`. The run passed
+all **245 samples across 35 configurations**, plus 35 calibration samples.
+Every one of the **32,557 timed batches / 4,167,296 declaration insertions**
+passed result validation. Measured source hashes remained unchanged.
+
+The host reported an Intel Xeon Platinum 8573C, nine logical CPUs in the process
+affinity mask, and Linux x86-64. These observations come from this shared
+workspace, so the sample ranges are part of the result.
+
+### Median milliseconds per 128-definition batch
+
+Smaller values are faster. OCaml column headings are worker limits; Lean uses
+one synchronous native-kernel insertion loop. Every table entry is the median
+of seven samples of complete-batch intervals.
+
+Original matched-input workloads:
+
+| Family | Lean native kernel | OCaml 1 | OCaml 2 | OCaml 4 | OCaml 8 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `wide` | 2.570 | 0.527 | 0.578 | 0.552 | 0.531 |
+| `chain` | 0.826 | 0.846 | 0.839 | 0.763 | 0.826 |
+| `identities` | 0.639 | 0.389 | 0.376 | 0.370 | 0.350 |
+
+Supplemental diversity controls:
+
+| Family | Lean native kernel | OCaml 1 | OCaml 2 | OCaml 4 | OCaml 8 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `distinct_trees` | 2.730 | 25.142 | 17.563 | 14.139 | 16.465 |
+| `unshared_trees` | 2.228 | 36.739 | 26.062 | 19.699 | 19.643 |
+| `dependent_terms` | 2.211 | 21.563 | 11.670 | 9.687 | 11.741 |
+| `alias_diamonds` | 0.927 | 9.584 | 7.640 | 7.118 | 16.458 |
+
+At one worker, the repeated-wide median is **4.87× faster than Lean**
+(0.527 ms versus 2.570 ms), and repeated identities are **1.64× faster**
+(0.389 ms versus 0.639 ms). The chain medians are close and their sample ranges
+overlap; its lower four-worker median is not evidence of parallel scaling,
+because every dependency wave contains one definition. Lean wins all four
+supplemental controls at every measured worker limit. Four or eight workers
+reduce some bytecode costs, but they do not close those gaps.
+
+### Observed sample ranges, milliseconds per batch
+
+Each interval is the minimum to maximum of the seven sample averages, not a
+confidence interval or a range over individual batches.
+
+| Family | Lean native kernel | OCaml 1 | OCaml 2 | OCaml 4 | OCaml 8 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `wide` | 2.447–3.333 | 0.504–0.681 | 0.460–0.752 | 0.466–0.671 | 0.454–0.717 |
+| `chain` | 0.789–1.323 | 0.785–1.093 | 0.744–1.026 | 0.725–0.932 | 0.710–0.962 |
+| `identities` | 0.453–1.190 | 0.326–0.426 | 0.326–0.439 | 0.322–0.423 | 0.320–0.439 |
+| `distinct_trees` | 2.363–3.632 | 22.716–28.054 | 15.979–20.540 | 11.819–17.728 | 13.310–19.669 |
+| `unshared_trees` | 2.196–3.571 | 35.473–56.501 | 23.515–34.112 | 17.504–20.531 | 17.755–23.847 |
+| `dependent_terms` | 2.131–2.393 | 19.181–27.345 | 11.200–14.106 | 8.287–11.057 | 10.350–12.981 |
+| `alias_diamonds` | 0.881–1.011 | 9.129–10.347 | 7.192–9.048 | 6.667–8.681 | 14.273–19.544 |
+
+The complete [measurement receipt](../conformance/evidence/bytecode-optimization/results.json)
+retains all observations, calibration counts, summaries, fixture inventories,
+hashes and host details. The [run log](../conformance/evidence/bytecode-optimization/run.log)
+contains the complete measurement order. No earlier unpublished timing is used
+in these tables.
 <!-- measured-results-end -->
 
 The original wide and identity fixtures repeat one physically shared type/value
@@ -142,8 +201,8 @@ from merged main beside the current modules. It compares exact successful
 results and refusal constructors over fuel grids and boundary budgets, cache
 contexts/collisions, hidden constants, hostile scopes/heights/cycles, indexed
 name positions, historical snapshots, merge freshness and worker counts.
-Actual control/assertion counts are recorded in the current log. This is finite
-regression evidence, not an independent soundness proof.
+The current gate passes **117 controls / 61,314 exact-result assertions**.
+This is finite regression evidence, not an independent soundness proof.
 
 Full acceptance retains the existing 210 fixture rows, adversarial/generated
 checks, batch concurrency checks, injected worker-start cleanup checks, strict

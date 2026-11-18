@@ -1,0 +1,329 @@
+lean-ocaml-benchmark-dag-v1
+n	0	s	1
+n	1	s	0
+n	2	v	0
+n	3	l	0	2
+n	4	a	3	1
+n	5	v	0
+n	6	l	0	5
+n	7	a	6	4
+n	8	v	0
+n	9	l	0	8
+n	10	a	9	7
+n	11	v	0
+n	12	l	0	11
+n	13	a	12	10
+n	14	p	13	13
+n	15	p	14	14
+n	16	p	15	15
+n	17	p	16	16
+n	18	p	17	17
+n	19	p	18	18
+n	20	p	19	19
+n	21	p	20	20
+n	22	p	21	21
+n	23	s	2
+n	24	s	1
+n	25	v	0
+n	26	l	23	25
+n	27	a	26	24
+n	28	v	0
+n	29	l	23	28
+n	30	a	29	27
+n	31	v	0
+n	32	l	23	31
+n	33	a	32	30
+n	34	v	0
+n	35	l	23	34
+n	36	a	35	33
+n	37	v	0
+n	38	l	23	37
+n	39	a	38	36
+n	40	v	0
+n	41	l	23	40
+n	42	a	41	39
+n	43	v	0
+n	44	l	23	43
+n	45	a	44	42
+n	46	v	0
+n	47	l	23	46
+n	48	a	47	45
+n	49	v	0
+n	50	l	23	49
+n	51	a	50	48
+n	52	v	0
+n	53	l	23	52
+n	54	a	53	51
+n	55	v	0
+n	56	l	23	55
+n	57	a	56	54
+n	58	v	0
+n	59	l	23	58
+n	60	a	59	57
+n	61	v	0
+n	62	l	23	61
+n	63	a	62	60
+n	64	v	0
+n	65	l	23	64
+n	66	a	65	63
+n	67	v	0
+n	68	l	23	67
+n	69	a	68	66
+n	70	v	0
+n	71	l	23	70
+n	72	a	71	69
+n	73	c	chain_0000
+n	74	c	chain_0001
+n	75	c	chain_0002
+n	76	c	chain_0003
+n	77	c	chain_0004
+n	78	c	chain_0005
+n	79	c	chain_0006
+n	80	c	chain_0007
+n	81	c	chain_0008
+n	82	c	chain_0009
+n	83	c	chain_0010
+n	84	c	chain_0011
+n	85	c	chain_0012
+n	86	c	chain_0013
+n	87	c	chain_0014
+n	88	c	chain_0015
+n	89	c	chain_0016
+n	90	c	chain_0017
+n	91	c	chain_0018
+n	92	c	chain_0019
+n	93	c	chain_0020
+n	94	c	chain_0021
+n	95	c	chain_0022
+n	96	c	chain_0023
+n	97	c	chain_0024
+n	98	c	chain_0025
+n	99	c	chain_0026
+n	100	c	chain_0027
+n	101	c	chain_0028
+n	102	c	chain_0029
+n	103	c	chain_0030
+n	104	c	chain_0031
+n	105	c	chain_0032
+n	106	c	chain_0033
+n	107	c	chain_0034
+n	108	c	chain_0035
+n	109	c	chain_0036
+n	110	c	chain_0037
+n	111	c	chain_0038
+n	112	c	chain_0039
+n	113	c	chain_0040
+n	114	c	chain_0041
+n	115	c	chain_0042
+n	116	c	chain_0043
+n	117	c	chain_0044
+n	118	c	chain_0045
+n	119	c	chain_0046
+n	120	c	chain_0047
+n	121	c	chain_0048
+n	122	c	chain_0049
+n	123	c	chain_0050
+n	124	c	chain_0051
+n	125	c	chain_0052
+n	126	c	chain_0053
+n	127	c	chain_0054
+n	128	c	chain_0055
+n	129	c	chain_0056
+n	130	c	chain_0057
+n	131	c	chain_0058
+n	132	c	chain_0059
+n	133	c	chain_0060
+n	134	c	chain_0061
+n	135	c	chain_0062
+n	136	c	chain_0063
+n	137	c	chain_0064
+n	138	c	chain_0065
+n	139	c	chain_0066
+n	140	c	chain_0067
+n	141	c	chain_0068
+n	142	c	chain_0069
+n	143	c	chain_0070
+n	144	c	chain_0071
+n	145	c	chain_0072
+n	146	c	chain_0073
+n	147	c	chain_0074
+n	148	c	chain_0075
+n	149	c	chain_0076
+n	150	c	chain_0077
+n	151	c	chain_0078
+n	152	c	chain_0079
+n	153	c	chain_0080
+n	154	c	chain_0081
+n	155	c	chain_0082
+n	156	c	chain_0083
+n	157	c	chain_0084
+n	158	c	chain_0085
+n	159	c	chain_0086
+n	160	c	chain_0087
+n	161	c	chain_0088
+n	162	c	chain_0089
+n	163	c	chain_0090
+n	164	c	chain_0091
+n	165	c	chain_0092
+n	166	c	chain_0093
+n	167	c	chain_0094
+n	168	c	chain_0095
+n	169	c	chain_0096
+n	170	c	chain_0097
+n	171	c	chain_0098
+n	172	c	chain_0099
+n	173	c	chain_0100
+n	174	c	chain_0101
+n	175	c	chain_0102
+n	176	c	chain_0103
+n	177	c	chain_0104
+n	178	c	chain_0105
+n	179	c	chain_0106
+n	180	c	chain_0107
+n	181	c	chain_0108
+n	182	c	chain_0109
+n	183	c	chain_0110
+n	184	c	chain_0111
+n	185	c	chain_0112
+n	186	c	chain_0113
+n	187	c	chain_0114
+n	188	c	chain_0115
+n	189	c	chain_0116
+n	190	c	chain_0117
+n	191	c	chain_0118
+n	192	c	chain_0119
+n	193	c	chain_0120
+n	194	c	chain_0121
+n	195	c	chain_0122
+n	196	c	chain_0123
+n	197	c	chain_0124
+n	198	c	chain_0125
+n	199	c	chain_0126
+d	chain_0000	72	22
+d	chain_0001	72	73
+d	chain_0002	72	74
+d	chain_0003	72	75
+d	chain_0004	72	76
+d	chain_0005	72	77
+d	chain_0006	72	78
+d	chain_0007	72	79
+d	chain_0008	72	80
+d	chain_0009	72	81
+d	chain_0010	72	82
+d	chain_0011	72	83
+d	chain_0012	72	84
+d	chain_0013	72	85
+d	chain_0014	72	86
+d	chain_0015	72	87
+d	chain_0016	72	88
+d	chain_0017	72	89
+d	chain_0018	72	90
+d	chain_0019	72	91
+d	chain_0020	72	92
+d	chain_0021	72	93
+d	chain_0022	72	94
+d	chain_0023	72	95
+d	chain_0024	72	96
+d	chain_0025	72	97
+d	chain_0026	72	98
+d	chain_0027	72	99
+d	chain_0028	72	100
+d	chain_0029	72	101
+d	chain_0030	72	102
+d	chain_0031	72	103
+d	chain_0032	72	104
+d	chain_0033	72	105
+d	chain_0034	72	106
+d	chain_0035	72	107
+d	chain_0036	72	108
+d	chain_0037	72	109
+d	chain_0038	72	110
+d	chain_0039	72	111
+d	chain_0040	72	112
+d	chain_0041	72	113
+d	chain_0042	72	114
+d	chain_0043	72	115
+d	chain_0044	72	116
+d	chain_0045	72	117
+d	chain_0046	72	118
+d	chain_0047	72	119
+d	chain_0048	72	120
+d	chain_0049	72	121
+d	chain_0050	72	122
+d	chain_0051	72	123
+d	chain_0052	72	124
+d	chain_0053	72	125
+d	chain_0054	72	126
+d	chain_0055	72	127
+d	chain_0056	72	128
+d	chain_0057	72	129
+d	chain_0058	72	130
+d	chain_0059	72	131
+d	chain_0060	72	132
+d	chain_0061	72	133
+d	chain_0062	72	134
+d	chain_0063	72	135
+d	chain_0064	72	136
+d	chain_0065	72	137
+d	chain_0066	72	138
+d	chain_0067	72	139
+d	chain_0068	72	140
+d	chain_0069	72	141
+d	chain_0070	72	142
+d	chain_0071	72	143
+d	chain_0072	72	144
+d	chain_0073	72	145
+d	chain_0074	72	146
+d	chain_0075	72	147
+d	chain_0076	72	148
+d	chain_0077	72	149
+d	chain_0078	72	150
+d	chain_0079	72	151
+d	chain_0080	72	152
+d	chain_0081	72	153
+d	chain_0082	72	154
+d	chain_0083	72	155
+d	chain_0084	72	156
+d	chain_0085	72	157
+d	chain_0086	72	158
+d	chain_0087	72	159
+d	chain_0088	72	160
+d	chain_0089	72	161
+d	chain_0090	72	162
+d	chain_0091	72	163
+d	chain_0092	72	164
+d	chain_0093	72	165
+d	chain_0094	72	166
+d	chain_0095	72	167
+d	chain_0096	72	168
+d	chain_0097	72	169
+d	chain_0098	72	170
+d	chain_0099	72	171
+d	chain_0100	72	172
+d	chain_0101	72	173
+d	chain_0102	72	174
+d	chain_0103	72	175
+d	chain_0104	72	176
+d	chain_0105	72	177
+d	chain_0106	72	178
+d	chain_0107	72	179
+d	chain_0108	72	180
+d	chain_0109	72	181
+d	chain_0110	72	182
+d	chain_0111	72	183
+d	chain_0112	72	184
+d	chain_0113	72	185
+d	chain_0114	72	186
+d	chain_0115	72	187
+d	chain_0116	72	188
+d	chain_0117	72	189
+d	chain_0118	72	190
+d	chain_0119	72	191
+d	chain_0120	72	192
+d	chain_0121	72	193
+d	chain_0122	72	194
+d	chain_0123	72	195
+d	chain_0124	72	196
+d	chain_0125	72	197
+d	chain_0126	72	198
+d	chain_0127	72	199
