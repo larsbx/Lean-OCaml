@@ -107,6 +107,12 @@ authority = "supporting"
 roles = ["oracle"]
 acceptance_authority = false
 
+[[language]]
+name = "Goose"
+authority = "supporting"
+roles = ["reference", "conformance"]
+acceptance_authority = false
+
 [migration]
 mode = "boundary_first"
 mass_move = false

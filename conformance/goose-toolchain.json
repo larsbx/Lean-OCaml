@@ -1,0 +1,9 @@
+{
+  "repository": "https://github.com/aardappel/goose.git",
+  "revision": "9412b80f52d833c4697cffdbbf1f4eeb5195cd41",
+  "backend": "standalone C compiled with GCC",
+  "goose_flags": ["-O2", "-DGS_DEBUG=1", "--standalone"],
+  "c_flags": ["-O2", "-lm", "-pthread"],
+  "checks": "bounds checks enabled with compiler-proven elimination; GS_DEBUG=1 retains overflow, range and tag checks",
+  "acceptance_authority": false
+}

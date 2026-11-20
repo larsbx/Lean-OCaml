@@ -1,4 +1,4 @@
-.PHONY: test test-lean audit acceptance benchmark benchmark-lean acceptance-benchmark
+.PHONY: test test-lean audit acceptance benchmark benchmark-lean acceptance-benchmark test-goose benchmark-goose
 
 test:
 	sh conformance/run.sh
@@ -17,6 +17,12 @@ benchmark:
 
 benchmark-lean:
 	python3 tools/compare_lean.py $(COMPARE_LEAN_ARGS)
+
+test-goose:
+	python3 tools/test_goose.py $(GOOSE_TEST_ARGS)
+
+benchmark-goose:
+	python3 tools/compare_goose.py $(GOOSE_BENCHMARK_ARGS)
 
 acceptance-benchmark:
 	python3 tools/acceptance.py --lean --benchmark $(if $(ESTATE_AUDITOR),--audit "$(ESTATE_AUDITOR)")

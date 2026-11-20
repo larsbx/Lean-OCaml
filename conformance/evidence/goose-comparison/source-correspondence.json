@@ -1,0 +1,106 @@
+{
+  "schema": "lean-ocaml.goose-measured-source-identity.v1",
+  "status": "passed",
+  "source_commit": "9a6c54f961ddb6b8f6a9b0020a6265cde913fdba",
+  "results_sha256": "9fc67423dd7151641db2abff95954eb29b35ac9f519743363cd4aa6c0c85a585",
+  "sources_compared": [
+    {
+      "path": "conformance/benchmark_clock.c",
+      "sha256": "30ed968b2206a2e2027a6a6111d35ea2b28636bb8a0e7190f91756d84033d0b0",
+      "bytes": 602
+    },
+    {
+      "path": "conformance/benchmark_compare.ml",
+      "sha256": "0054b289cd7128a78756585b73fc4cf18b952515a27602bd5cf94d6fe949c6ca",
+      "bytes": 4951
+    },
+    {
+      "path": "conformance/generated.tsv.defs",
+      "sha256": "689929b0bd8e6a3ddf43069b092d73189588743b960dd68153e5855da1394113",
+      "bytes": 273
+    },
+    {
+      "path": "conformance/generated.tsv.types",
+      "sha256": "521823fbfc1830e17ab6b72f6f99c690bcd64918611e38a1d845d561403f20da",
+      "bytes": 3198
+    },
+    {
+      "path": "conformance/goose-toolchain.json",
+      "sha256": "704df4ab5af394102278a0c22bff8151813fca25a7ef907a54da55d252829c84",
+      "bytes": 419
+    },
+    {
+      "path": "conformance/migration_check.ml",
+      "sha256": "aebfc3d184f203191120a359db9fdf70f472f37669ff9d062ebd51cfd9e233f6",
+      "bytes": 3479
+    },
+    {
+      "path": "oracles/BenchmarkKernel.lean",
+      "sha256": "6ba9459a2deaa78de0637b3d3c1b35c7bc2e967e2c89fedef1b5d90fa9e0f48c",
+      "bytes": 10371
+    },
+    {
+      "path": "reference/bounded_parallel.ml",
+      "sha256": "6f686225a0bd448e6ab3241622efc6cdc763315bd7bb65fdb5f0ce9f9ee84072",
+      "bytes": 2401
+    },
+    {
+      "path": "reference/bounded_parallel.mli",
+      "sha256": "3eb129db11693eec996f19a7030313673d046bc4e7b802e92da6faed003667c4",
+      "bytes": 973
+    },
+    {
+      "path": "reference/conversion.ml",
+      "sha256": "db3798a25865d5b04cb73bff33c189df22b9e3633107d556bdef8fc28dbde179",
+      "bytes": 22288
+    },
+    {
+      "path": "reference/conversion.mli",
+      "sha256": "5d371d8f0cb5dce9eb7b6a311afde05609941dd6a89b2f21d9c069dfaff65bd5",
+      "bytes": 4670
+    },
+    {
+      "path": "reference/definition_batch.ml",
+      "sha256": "ec89f4d78d0411912893dcf8c906159c3e8350caa32849225bc3cfab268b8b42",
+      "bytes": 11268
+    },
+    {
+      "path": "reference/definition_batch.mli",
+      "sha256": "6059001a2a707ad3ecb5018da2f45104be59bffed3a4da3d93230a164ce8ac93",
+      "bytes": 2470
+    },
+    {
+      "path": "reference/goose/benchmark.goose",
+      "sha256": "71d62f9dad2f8d58a1bdb74602b41ca3e8aeabde89522c5d893d239ae0cec0a6",
+      "bytes": 19236
+    },
+    {
+      "path": "tools/compare_goose.py",
+      "sha256": "7f3bd072b22075f4d0183ec2a1f48eb06408aa2038da002e98395a9728935d4b",
+      "bytes": 8044
+    },
+    {
+      "path": "tools/compare_lean.py",
+      "sha256": "4da327cea417a1e35a02adf9134c93b17e234f657bef33251ded0b495114d4f8",
+      "bytes": 14011
+    },
+    {
+      "path": "tools/goose_common.py",
+      "sha256": "50dd0a0354dc69cc9988b0557ccfb6a44a573305083f61a307309ca7558bb73f",
+      "bytes": 4992
+    },
+    {
+      "path": "tools/optimization_workloads.py",
+      "sha256": "ce4b1a2407e42354ddebcdb23f9ce4489719e521b9d82d75292b779afc4969a3",
+      "bytes": 12045
+    },
+    {
+      "path": "tools/test_goose.py",
+      "sha256": "5de641bbd17b60b3a97c2d4d162985bd32d7c72cc1c9efa97e354ea1706a1ad5",
+      "bytes": 14192
+    }
+  ],
+  "method": "SHA-256 of git show source_commit:path equals every measured source hash",
+  "checked_at_utc": "2026-11-20T04:47:15.855446+00:00",
+  "acceptance_authority": false
+}

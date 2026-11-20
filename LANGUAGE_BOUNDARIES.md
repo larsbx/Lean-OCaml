@@ -3,6 +3,7 @@
 | Language | Path | Role |
 |---|---|---|
 | OCaml | `reference/`, `conformance/*.ml` | Owns the reference observations and local replay |
+| Goose | `reference/goose/` | Experimental bounded sequential checker for matched migration benchmarks; no admission authority |
 | Lean | `oracles/Generate.lean`, `oracles/RustBaseline.lean`, `oracles/Validate*Refusals.lean` | Generates comparison evidence and independently checks exact semantic refusals through the trusted kernel |
 | Shell | `conformance/run.sh`, CI | Builds and replays the two paths |
 | Python | `tools/check_provenance.py`, `tools/acceptance.py` | Checks provenance and records unsigned execution evidence |
@@ -29,3 +30,11 @@ The Rust baseline registers exactly two intentional disagreements; all other
 disagreements fail. The source manifest records copied generators and fixtures
 with exact upstream paths, revisions and byte identities. The generated OCaml
 property corpus has no trusted Lean typing or conversion evidence.
+
+The Goose experiment consumes the same runtime DAG fixtures as the OCaml and
+native Lean benchmark drivers. An untimed three-way gate checks ordered
+success/refusal outcomes, including registered differences for function eta
+and proof irrelevance. Its representation, caches and work accounting differ
+from OCaml; no same-fuel correspondence is asserted. Goose emits standalone C
+with runtime checks enabled, and GCC compiles that generated code. Handwritten
+C does not implement expression checking. See [the experiment](docs/goose-benchmark.md).
