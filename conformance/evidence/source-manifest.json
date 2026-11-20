@@ -1,8 +1,8 @@
 [
   {
     "path": ".github/workflows/conformance.yml",
-    "bytes": 1960,
-    "sha256": "c135355efc5e6e67095c83e27d4fc05b4c1113197ecd58ebaa3f56d4748d39a9"
+    "bytes": 3245,
+    "sha256": "4e5ee437e8ba50e82f9f2f0bee5a326473f17dc5572f26c908ca10e7918945f8"
   },
   {
     "path": ".gitignore",
@@ -21,23 +21,23 @@
   },
   {
     "path": "ESTATE.toml",
-    "bytes": 2052,
-    "sha256": "1b8a137b5b8f2a37050154ffa1ff90c19a9320d9e2048577df5b3011feb55954"
+    "bytes": 2172,
+    "sha256": "9156392f2168e27ebc8d994deb9c172e087ed802479ded53654de3b2666fd415"
   },
   {
     "path": "LANGUAGE_BOUNDARIES.md",
-    "bytes": 2017,
-    "sha256": "02dc0bf5fd70eeded8fd69ee3981b3c84882ccf4c86890244e065fdd373aea81"
+    "bytes": 2696,
+    "sha256": "ef375765d233246467542bc2bd7e4ccb84a366767947b031f0b048eb69a3d042"
   },
   {
     "path": "Makefile",
-    "bytes": 582,
-    "sha256": "92479688378c583beea6739bd53715500a496200a122372518216cde2eb341b9"
+    "bytes": 744,
+    "sha256": "66415b56cecd6faa7da572cbe40c055360bff8093567765587fe49f868ed9b66"
   },
   {
     "path": "README.md",
-    "bytes": 5073,
-    "sha256": "15e14da962c768e0e0a1cfa429030f72bab2b51baef11c5df4636255120c7cf0"
+    "bytes": 5367,
+    "sha256": "72e88f1e46e590b3a519f09945f2082d07e2ce17fdd257c4ecee7f467d742758"
   },
   {
     "path": "conformance/adversarial.ml",
@@ -78,6 +78,16 @@
     "path": "conformance/generated.tsv.types",
     "bytes": 3198,
     "sha256": "521823fbfc1830e17ab6b72f6f99c690bcd64918611e38a1d845d561403f20da"
+  },
+  {
+    "path": "conformance/goose-toolchain.json",
+    "bytes": 419,
+    "sha256": "704df4ab5af394102278a0c22bff8151813fca25a7ef907a54da55d252829c84"
+  },
+  {
+    "path": "conformance/migration_check.ml",
+    "bytes": 3479,
+    "sha256": "aebfc3d184f203191120a359db9fdf70f472f37669ff9d062ebd51cfd9e233f6"
   },
   {
     "path": "conformance/optimization.ml",
@@ -140,6 +150,11 @@
     "sha256": "46a1acd1092adf1dfbdeca62b653a8505b3244a8b16257e3ac4a01e41b20be29"
   },
   {
+    "path": "docs/goose-benchmark.md",
+    "bytes": 16122,
+    "sha256": "064ec34b351e8ac04f2427c4b70dfa8bc3f64a0b8f9d5fbdc6d9d42b7d667740"
+  },
+  {
     "path": "docs/kernel-correspondence.md",
     "bytes": 9619,
     "sha256": "18568cb46a7913c0eb52a7ebdcc9b047dd526a29bf3fda9d3697514e12f1b54b"
@@ -176,8 +191,8 @@
   },
   {
     "path": "oracles/BenchmarkKernel.lean",
-    "bytes": 8679,
-    "sha256": "210d80dfdeb2b76c241baaac725b69b3b705fe261d2dce3b2b885db0856b8945"
+    "bytes": 10371,
+    "sha256": "6ba9459a2deaa78de0637b3d3c1b35c7bc2e967e2c89fedef1b5d90fa9e0f48c"
   },
   {
     "path": "oracles/Generate.lean",
@@ -235,6 +250,11 @@
     "sha256": "6059001a2a707ad3ecb5018da2f45104be59bffed3a4da3d93230a164ce8ac93"
   },
   {
+    "path": "reference/goose/benchmark.goose",
+    "bytes": 19236,
+    "sha256": "71d62f9dad2f8d58a1bdb74602b41ca3e8aeabde89522c5d893d239ae0cec0a6"
+  },
+  {
     "path": "schemas/beta-zeta-v1.md",
     "bytes": 670,
     "sha256": "865c25619e31151f3c64fde8b15c7486c9e467941c9621b14155d2931a0a3c30"
@@ -265,9 +285,19 @@
     "sha256": "56d21fe6278163bfd24d705d27c6cf8ffacf39f10bb6cf6df7a531750ed00034"
   },
   {
+    "path": "tools/build_goose.sh",
+    "bytes": 1017,
+    "sha256": "5aaf7ec56c09e5079c5c5ffaeb141b5fbd50062b99f402cb7961dd706c160f8e"
+  },
+  {
     "path": "tools/check_provenance.py",
     "bytes": 2933,
     "sha256": "8c7a7d022642df549468ab7fa3b86ebcd5c9b80f36a210b8ed925faa16e593a9"
+  },
+  {
+    "path": "tools/compare_goose.py",
+    "bytes": 8044,
+    "sha256": "7f3bd072b22075f4d0183ec2a1f48eb06408aa2038da002e98395a9728935d4b"
   },
   {
     "path": "tools/compare_lean.py",
@@ -280,6 +310,11 @@
     "sha256": "3d5dd7324086ac821feb31800f7cea8833ff206d149e8cff7313f10ab58be1e6"
   },
   {
+    "path": "tools/goose_common.py",
+    "bytes": 4992,
+    "sha256": "50dd0a0354dc69cc9988b0557ccfb6a44a573305083f61a307309ca7558bb73f"
+  },
+  {
     "path": "tools/optimization_workloads.py",
     "bytes": 12045,
     "sha256": "ce4b1a2407e42354ddebcdb23f9ce4489719e521b9d82d75292b779afc4969a3"
@@ -288,6 +323,11 @@
     "path": "tools/test_acceptance.py",
     "bytes": 2195,
     "sha256": "3a06e772561a84552b28bc7d548fb033a97712c1e8f9c89250edce78db1bf7d8"
+  },
+  {
+    "path": "tools/test_goose.py",
+    "bytes": 14192,
+    "sha256": "5de641bbd17b60b3a97c2d4d162985bd32d7c72cc1c9efa97e354ea1706a1ad5"
   },
   {
     "path": "tools/test_optimization.sh",

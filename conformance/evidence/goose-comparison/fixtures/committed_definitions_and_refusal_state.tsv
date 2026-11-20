@@ -1,0 +1,45 @@
+lean-ocaml-benchmark-dag-v1
+n	0	s	1
+n	1	s	0
+n	2	c	ocamlRefAlias
+n	3	c	ocamlRefAlias
+n	4	p	2	3
+n	5	c	ocamlRefAlias
+n	6	v	0
+n	7	l	5	6
+n	8	s	1
+n	9	s	0
+n	10	s	1
+n	11	c	ocamlRefMissing
+n	12	s	1
+n	13	s	1
+n	14	s	1
+n	15	v	0
+n	16	l	14	15
+n	17	s	0
+n	18	s	0
+n	19	s	0
+n	20	p	18	19
+n	21	c	ocamlRefId
+n	22	s	1
+n	23	c	ocamlRefMismatch
+n	24	s	1
+n	25	c	ocamlRefAlias
+n	26	s	1
+n	27	s	1
+n	28	s	1
+n	29	s	0
+n	30	s	1
+n	31	c	reusedRefusedName
+d	ocamlRefAlias	0	1
+d	ocamlRefId	4	7
+d	ocamlRefAlias	8	9
+d	ocamlRefMissing	10	11
+d	ocamlRefMismatch	12	13
+d	ocamlRefNonType	16	17
+d	afterRefusalId	20	21
+d	refusedNameAbsent	22	23
+d	oldAliasPreserved	24	25
+d	reusedRefusedName	26	27
+d	reusedRefusedName	28	29
+d	useReusedName	30	31

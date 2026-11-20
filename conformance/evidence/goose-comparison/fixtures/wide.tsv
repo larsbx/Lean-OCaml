@@ -1,0 +1,202 @@
+lean-ocaml-benchmark-dag-v1
+n	0	s	1
+n	1	s	0
+n	2	v	0
+n	3	l	0	2
+n	4	a	3	1
+n	5	v	0
+n	6	l	0	5
+n	7	a	6	4
+n	8	v	0
+n	9	l	0	8
+n	10	a	9	7
+n	11	v	0
+n	12	l	0	11
+n	13	a	12	10
+n	14	p	13	13
+n	15	p	14	14
+n	16	p	15	15
+n	17	p	16	16
+n	18	p	17	17
+n	19	p	18	18
+n	20	p	19	19
+n	21	p	20	20
+n	22	p	21	21
+n	23	s	2
+n	24	s	1
+n	25	v	0
+n	26	l	23	25
+n	27	a	26	24
+n	28	v	0
+n	29	l	23	28
+n	30	a	29	27
+n	31	v	0
+n	32	l	23	31
+n	33	a	32	30
+n	34	v	0
+n	35	l	23	34
+n	36	a	35	33
+n	37	v	0
+n	38	l	23	37
+n	39	a	38	36
+n	40	v	0
+n	41	l	23	40
+n	42	a	41	39
+n	43	v	0
+n	44	l	23	43
+n	45	a	44	42
+n	46	v	0
+n	47	l	23	46
+n	48	a	47	45
+n	49	v	0
+n	50	l	23	49
+n	51	a	50	48
+n	52	v	0
+n	53	l	23	52
+n	54	a	53	51
+n	55	v	0
+n	56	l	23	55
+n	57	a	56	54
+n	58	v	0
+n	59	l	23	58
+n	60	a	59	57
+n	61	v	0
+n	62	l	23	61
+n	63	a	62	60
+n	64	v	0
+n	65	l	23	64
+n	66	a	65	63
+n	67	v	0
+n	68	l	23	67
+n	69	a	68	66
+n	70	v	0
+n	71	l	23	70
+n	72	a	71	69
+d	wide_0000	72	22
+d	wide_0001	72	22
+d	wide_0002	72	22
+d	wide_0003	72	22
+d	wide_0004	72	22
+d	wide_0005	72	22
+d	wide_0006	72	22
+d	wide_0007	72	22
+d	wide_0008	72	22
+d	wide_0009	72	22
+d	wide_0010	72	22
+d	wide_0011	72	22
+d	wide_0012	72	22
+d	wide_0013	72	22
+d	wide_0014	72	22
+d	wide_0015	72	22
+d	wide_0016	72	22
+d	wide_0017	72	22
+d	wide_0018	72	22
+d	wide_0019	72	22
+d	wide_0020	72	22
+d	wide_0021	72	22
+d	wide_0022	72	22
+d	wide_0023	72	22
+d	wide_0024	72	22
+d	wide_0025	72	22
+d	wide_0026	72	22
+d	wide_0027	72	22
+d	wide_0028	72	22
+d	wide_0029	72	22
+d	wide_0030	72	22
+d	wide_0031	72	22
+d	wide_0032	72	22
+d	wide_0033	72	22
+d	wide_0034	72	22
+d	wide_0035	72	22
+d	wide_0036	72	22
+d	wide_0037	72	22
+d	wide_0038	72	22
+d	wide_0039	72	22
+d	wide_0040	72	22
+d	wide_0041	72	22
+d	wide_0042	72	22
+d	wide_0043	72	22
+d	wide_0044	72	22
+d	wide_0045	72	22
+d	wide_0046	72	22
+d	wide_0047	72	22
+d	wide_0048	72	22
+d	wide_0049	72	22
+d	wide_0050	72	22
+d	wide_0051	72	22
+d	wide_0052	72	22
+d	wide_0053	72	22
+d	wide_0054	72	22
+d	wide_0055	72	22
+d	wide_0056	72	22
+d	wide_0057	72	22
+d	wide_0058	72	22
+d	wide_0059	72	22
+d	wide_0060	72	22
+d	wide_0061	72	22
+d	wide_0062	72	22
+d	wide_0063	72	22
+d	wide_0064	72	22
+d	wide_0065	72	22
+d	wide_0066	72	22
+d	wide_0067	72	22
+d	wide_0068	72	22
+d	wide_0069	72	22
+d	wide_0070	72	22
+d	wide_0071	72	22
+d	wide_0072	72	22
+d	wide_0073	72	22
+d	wide_0074	72	22
+d	wide_0075	72	22
+d	wide_0076	72	22
+d	wide_0077	72	22
+d	wide_0078	72	22
+d	wide_0079	72	22
+d	wide_0080	72	22
+d	wide_0081	72	22
+d	wide_0082	72	22
+d	wide_0083	72	22
+d	wide_0084	72	22
+d	wide_0085	72	22
+d	wide_0086	72	22
+d	wide_0087	72	22
+d	wide_0088	72	22
+d	wide_0089	72	22
+d	wide_0090	72	22
+d	wide_0091	72	22
+d	wide_0092	72	22
+d	wide_0093	72	22
+d	wide_0094	72	22
+d	wide_0095	72	22
+d	wide_0096	72	22
+d	wide_0097	72	22
+d	wide_0098	72	22
+d	wide_0099	72	22
+d	wide_0100	72	22
+d	wide_0101	72	22
+d	wide_0102	72	22
+d	wide_0103	72	22
+d	wide_0104	72	22
+d	wide_0105	72	22
+d	wide_0106	72	22
+d	wide_0107	72	22
+d	wide_0108	72	22
+d	wide_0109	72	22
+d	wide_0110	72	22
+d	wide_0111	72	22
+d	wide_0112	72	22
+d	wide_0113	72	22
+d	wide_0114	72	22
+d	wide_0115	72	22
+d	wide_0116	72	22
+d	wide_0117	72	22
+d	wide_0118	72	22
+d	wide_0119	72	22
+d	wide_0120	72	22
+d	wide_0121	72	22
+d	wide_0122	72	22
+d	wide_0123	72	22
+d	wide_0124	72	22
+d	wide_0125	72	22
+d	wide_0126	72	22
+d	wide_0127	72	22
