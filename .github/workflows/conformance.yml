@@ -8,7 +8,8 @@ permissions:
 jobs:
   conformance:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    # Include the pinned Goose source build and both migration receipt runs.
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -44,3 +45,31 @@ jobs:
         run: |
           test "$(ocamlc -version)" = "$(cat .ocaml-version)"
           sh conformance/run.sh --lean
+      - name: Build pinned Goose
+        run: |
+          set -eu
+          # ubuntu-24.04 supplies CMake >= 3.27; Goose enforces that minimum.
+          cmake --version
+          sh tools/build_goose.sh "$RUNNER_TEMP/goose"
+      - name: Replay bounded Goose migration controls
+        env:
+          GOOSE_SOURCE: ${{ runner.temp }}/goose
+        run: make test-goose GOOSE_TEST_ARGS="--definitions 16"
+      - name: Smoke test Goose comparison runner
+        env:
+          GOOSE_SOURCE: ${{ runner.temp }}/goose
+        # This verifies the runner and receipt format; CI timings are not a speed gate.
+        run: >-
+          make benchmark-goose
+          GOOSE_BENCHMARK_ARGS="--samples 1 --definitions 8 --workers 1
+          --min-sample-seconds 0.05 --output conformance/evidence/goose-ci-smoke"
+      - name: Preserve Goose migration receipts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: goose-migration-receipts
+          path: |
+            conformance/evidence/goose-conformance/
+            conformance/evidence/goose-ci-smoke/
+          if-no-files-found: ignore
+          retention-days: 30

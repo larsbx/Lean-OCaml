@@ -21,6 +21,8 @@ make audit                # Fetch and verify the pinned external estate auditor
 make acceptance           # Write exact-source local logs and an unsigned receipt
 make benchmark            # Compare 1/2/4/8 workers on wide and chained workloads
 make benchmark-lean       # Compare bytecode with the actual checked Lean kernel
+make test-goose           # Differential checks for the pinned Goose pilot
+make benchmark-goose      # Goose AOT vs OCaml bytecode and native Lean, same DAGs
 make acceptance-benchmark # Include five-repeat performance observations in receipt
 ```
 
@@ -59,6 +61,7 @@ merged-main baseline, or a verified checkout supplied by `OPTIMIZATION_BASELINE`
 | [Batch contract](schemas/definition-batch-v1.md) | Dependencies, resource limits, checked merging and failure behavior |
 | [Concurrency guide](docs/reference-concurrency.md) | API example, validation and reproducible measurements |
 | [Bytecode optimization](docs/bytecode-optimization.md) | Exact-cost reuse, direct Lean comparison, full results and limits |
+| [Goose migration experiment](docs/goose-benchmark.md) | Pinned Goose AOT candidate, three-way controls and matched workload results |
 | [Validation guide](docs/validation.md) | Test inventory and interpretation of exact-source evidence |
 | [Architecture](ARCHITECTURE.md) | Estate authority and language boundaries |
 | [Repository identity](docs/remote-access.md) | Accessible project name and publication history |

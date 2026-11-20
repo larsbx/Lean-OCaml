@@ -80,7 +80,7 @@ def decodeNode (nodes : Array Expr) (fields : List String) : IO Expr := do
     return .letE `x (← node nodes type) (← node nodes value) (← node nodes body) false
   | _ => failure "unknown node tag or invalid node arity"
 
-def readDeclarations (path : System.FilePath) : IO (Array Declaration) := do
+def readDeclarations (path : System.FilePath) (allowDuplicateNames := false) : IO (Array Declaration) := do
   let contents ← IO.FS.readFile path
   unless contents.endsWith "\n" do failure "fixture must end with LF"
   let header :: rows := (contents.splitOn "\n").dropLast
@@ -99,7 +99,7 @@ def readDeclarations (path : System.FilePath) : IO (Array Declaration) := do
       nodes := nodes.push (← decodeNode nodes fields)
     | ["d", nameText, typeText, valueText] =>
       let name ← readName nameText
-      if names.contains name then failure s!"duplicate fixture name: {name}"
+      if !allowDuplicateNames && names.contains name then failure s!"duplicate fixture name: {name}"
       names := names.insert name
       let type ← node nodes typeText
       let value ← node nodes valueText
@@ -153,6 +153,36 @@ def refusalControl (initial : Environment) : IO Unit := do
   | .ok _ => failure "invalid control accepted: checking is not active"
   if initial.contains `benchmarkInvalidSort then failure "refusal changed initial environment"
 
+-- Untimed migration differential oracle. Only designated semantic exceptions
+-- are observations; resource/internal exceptions abort the check. A refused
+-- insertion retains the previous environment, so subsequent rows exercise it.
+def checkMigration (path : System.FilePath) : IO Unit := do
+  let declarations ← readDeclarations path true
+  let mut env ← mkEmptyEnvironment 0
+  let mut outcomes : Array Json := #[]
+  let mut accepted := 0
+  for declaration in declarations do
+    let .defnDecl definition := declaration | failure "unexpected declaration kind"
+    let outcome ← match env.addDeclCore 10000000 1000 declaration none true with
+      | .ok next => do
+        validate env next #[declaration]
+        env := next
+        accepted := accepted + 1
+        pure "accepted"
+      | .error error => do
+        let name := exceptionName error
+        unless ["unknownConstant", "alreadyDeclared", "declTypeMismatch", "funExpected",
+                "typeExpected", "letTypeMismatch", "exprTypeMismatch", "appTypeMismatch"].contains name do
+          failure s!"migration oracle inconclusive: {name}"
+        pure name
+    outcomes := outcomes.push (Json.mkObj [
+      ("name", toJson definition.name.toString), ("outcome", toJson outcome)])
+  IO.println (Json.mkObj [
+    ("engine", toJson "lean-kernel"), ("status", toJson "checked"),
+    ("outcomes", toJson outcomes), ("accepted", toJson accepted),
+    ("acceptance_authority", toJson false), ("trust_level", toJson (0 : Nat)),
+    ("checked_insertion", toJson true)]).compress
+
 def run (path : System.FilePath) (iterations : Nat) : IO Unit := do
   let declarations ← readDeclarations path
   let initial ← mkEmptyEnvironment 0
@@ -185,6 +215,9 @@ def run (path : System.FilePath) (iterations : Nat) : IO Unit := do
 end KernelBenchmark
 
 def main (args : List String) : IO Unit := do
+  if let ["--check", path] := args then
+    KernelBenchmark.checkMigration path
+    return
   let [path, iterationsText] := args
     | KernelBenchmark.failure "usage: benchmark-kernel fixture.tsv iterations"
   let some iterations := iterationsText.toNat?
